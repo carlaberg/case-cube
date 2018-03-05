@@ -1,4 +1,4 @@
-import {FETCH_CASES} from '../utils/types'
+import {FETCH_CASES, UPDATE_HERO} from '../utils/types'
 
 export const caseReducer = (state={}, action) => {
 
@@ -9,6 +9,9 @@ export const caseReducer = (state={}, action) => {
             Object.assign(caseObject, {[item.caseId]: item})
           })
           return caseObject
+         case UPDATE_HERO:
+            const newState = { ...state, [action.payload.caseId]: action.payload }
+            return newState
         default:
           return state
     }

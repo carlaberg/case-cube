@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as api from "../../apiFetchFunctions";
-import { updateCaseImages } from '../../actions';
+import { updateHero } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import "./EditCase.scss";
@@ -12,7 +12,6 @@ class EditCase extends React.Component  {
   constructor(props) {
     super(props);
 
-
     this.state = {
       caseImageInputs: [],
       caseImageValues: [],
@@ -21,6 +20,7 @@ class EditCase extends React.Component  {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitHero = this.handleSubmitHero.bind(this);
     this.handleImgChange = this.handleImgChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.renderCaseImgs = this.renderCaseImgs.bind(this);
@@ -30,7 +30,7 @@ class EditCase extends React.Component  {
 
     this.setState({
       casePicsSrc: nextProps.casePicsSrc,
-      heroSrc: `/uploads/${nextProps.cases[this.props.match.params.title].caseHeroImg}`
+      heroSrc: `/uploads/${nextProps.cases[nextProps.match.params.title].caseHeroImg}`
     })
   }
 
@@ -41,7 +41,6 @@ class EditCase extends React.Component  {
   }
 
   setCasePicsSrc(id, url) {
-
     if(id.startsWith("case-image")) {
 
       const item = this.state.casePicsSrc.findIndex(pic => pic.id === id);
@@ -61,25 +60,18 @@ class EditCase extends React.Component  {
             ...this.state.casePicsSrc.slice(item+1)
           ]
         })
-
       }
-
-
     } else {
-
       this.setState({
         heroSrc: url
       })
     }
 
-
-
-
   }
 
   handleFileChange(event){
     event.persist();
-
+    console.log(this.refs.image.files[0]);
     const name = event.target.getAttribute("name");
     const file = event.target.files[0];
 
@@ -88,29 +80,13 @@ class EditCase extends React.Component  {
     const url = reader.readAsDataURL(file);
 
     reader.onloadend = function (e) {
-
         this.setCasePicsSrc(name, reader.result);
-
     }.bind(this)
-
-
-
-  }
-
-  handleCase(caseData) {
-    api.addCase(caseData)
-      .then(response => {
-        this.setState({
-          cases: [ response, ...this.state.cases ]
-
-        })
-      })
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    const caseHeroImg = this.refs.image.files[0];
     const casePics = this.state.caseImageValues
 
      const caseData = {
@@ -120,16 +96,23 @@ class EditCase extends React.Component  {
        description: this.refs.description.value
      }
 
+  }
 
-     this.handleCase(caseData);
+  handleSubmitHero(event) {
+      event.preventDefault();
+      const hero = this.refs.image.files[0] || false;
+      const id = this.props.cases[this.props.match.params.title].caseId
+
+      if (hero) {
+          this.props.updateHero(id, hero);
+      } else {
+          console.log('you hant changed the hero');
+      }
   }
 
   renderCaseImgs(){
     var inputs = this.state.caseImageInputs;
-
     const newImageInput = `case-image${inputs.length + 1}`;
-
-
     this.setState({caseImageInputs: [ ...inputs, newImageInput ]})
   }
 
@@ -137,7 +120,7 @@ class EditCase extends React.Component  {
     if(!this.props.cases[this.props.match.params.title]) {
       return ''
     }
-    console.log(this.state);
+
     const caseItem = this.props.cases[this.props.match.params.title]
 
     let inputs = this.state.caseImageInputs;
@@ -146,17 +129,16 @@ class EditCase extends React.Component  {
 
          <h1>Edit Case: {caseItem.title}</h1>
 
-        <form ref="caseForm" name="case-form" id="case-form" method="POST" onSubmit={this.handleSubmit} encType="multipart/form-data">
-
-          <input type="hidden" name="case-id" value="" />
-
+     <form ref="heroForm" name="hero-form" id="hero-form" method="POST" onSubmit={this.handleSubmitHero} encType="multipart/form-data">
           <div className="edit-case__hero-group form-group">
             <label htmlFor="image">Huvudbild</label>
             <input className="form-control-file" ref="image" type="file" name="hero" id="image" accept=".jpg" onChange={this.handleFileChange} />
             <img className="preview-hero" src={this.state.heroSrc} />
           </div>
+          <button className="btn btn-success" type="submit">Save Hero</button>
+     </form>
 
-
+      <form ref="caseForm" name="case-form" id="case-form" method="POST" onSubmit={this.handleSubmit} encType="multipart/form-data">
 
           <div className="form-group">
             <label htmlFor="title">Projekttitel</label>
@@ -205,12 +187,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateCaseImages}, dispatch);
+  return bindActionCreators({ updateHero }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditCase)
-
-EditCase.defaultProps = {
-  casePicsSrc: [],
-  heroSrc: null
-
-}

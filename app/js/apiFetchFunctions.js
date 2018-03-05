@@ -62,33 +62,26 @@ export const addCase = async caseData => {
     }).then(resp => resp.json());
 };
 
-export const updateCase = async (id, caseData) => {
+export const updateHero = async (id, hero) => {
+
     const formData = new FormData();
-    formData.append('casePics', caseData.caseHeroImg);
-    caseData.casePics.map(pic => formData.append('casePics', pic));
+    formData.append('casePics', hero);
 
     let response = await fetch('/api/profile', {
-        method: 'PUT',
+        method: 'POST',
         body: formData
     });
     let imgData = await response.json();
 
-    const casePics = imgData
-        .filter((img, index) => index != 0)
-        .map(pic => pic.filename);
+    const dbObject = { id, hero: imgData[0].filename};
 
-    const dbObject = {
-        title: caseData.title,
-        caseHeroImg:
-            imgData.length > 0 ? imgData[0].filename : caseData.caseHeroImg,
-        casePics,
-        description: caseData.description
-    };
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'PUT',
+    });
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-
-    return fetch('/api/update-case', {
-        method: 'post',
+    return fetch('/api/update-hero', {
+        method: 'PUT',
         body: JSON.stringify(dbObject),
         headers: headers
     }).then(resp => resp.json());

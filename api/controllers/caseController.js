@@ -57,3 +57,17 @@ exports.insertCase = async (req, res, next) => {
   }
 
 };
+
+exports.updateHero = async (req, res, next) => {
+    console.log(req.body);
+    try {
+        Case.findOneAndUpdate({caseId: req.body.id}, {$set: {caseHeroImg: req.body.hero}}, {new: true}, (err, doc) => {
+            if(err) {
+                console.log('Could not update Hero', err);
+            }
+            res.json(doc)
+        })
+    } catch(err) {
+        console.log(err.message);
+    }
+}

@@ -22,4 +22,6 @@ router.post("/api/tomemory", caseController.uploadToMemory);
 
 router.post("/api/insert-case", caseController.insertCase);
 
+router.put("/api/update-hero", caseController.updateHero);
+
 module.exports = router;
