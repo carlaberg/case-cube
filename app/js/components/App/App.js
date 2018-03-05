@@ -1,12 +1,15 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchCases } from '../../actions';
 
 import Admin from "../Admin";
-import SingleCase from "../SingleCase/SingleCase";
 import ShowCaseData from "../ShowCaseData/ShowCaseData";
+import EditCase from "../EditCase/EditCase";
 import * as api from "../../apiFetchFunctions";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-export default class App extends React.Component {
+class App extends React.Component {
 constructor(props){
   super(props);
   this.state = {
@@ -15,10 +18,11 @@ constructor(props){
   }
 
   this.selectCase = this.selectCase.bind(this);
-  this.handleCase = this.handleCase.bind(this);
 }
 
 componentDidMount() {
+  this.props.fetchCases();
+
   api.getCases()
     .then(response => {
       this.setState({cases: response.reverse()})
@@ -30,35 +34,15 @@ componentDidMount() {
     this.setState({isSelected: caseObject});
   }
 
-  handleCase(caseData) {
-    api.addCase(caseData)
-      .then(response => {
-        this.setState({
-          cases: [ response, ...this.state.cases ]
-
-        })
-      })
-  }
-  updateCase(caseData) {
-    console.log(caseData);
-    // api.updateCase(caseData)
-    //   .then(response => {
-    //     this.setState({
-    //       cases: [ response, ...this.state.cases ]
-    //
-    //     })
-    //   })
-  }
-
   render() {
-    // console.log(this.state.cases);
+    console.log(this.props.cases);
     return (
       <Router>
         <div>
           <Switch>
             <Route exact path="/" render={props => <ShowCaseData caseData={this.state.cases} {...props} />} />
-            <Route exact path="/admin" render={props => <Admin isSelected={this.state.isSelected} selectCase={this.selectCase} cases={this.state.cases} handleCase={this.handleCase} {...props} />} />
-            <Route path="/:title" render={props => <SingleCase caseData={this.state.cases} {...props} />} />
+            <Route exact path="/admin/cases" render={props => <Admin isSelected={this.state.isSelected} selectCase={this.selectCase} cases={this.state.cases} handleCase={this.handleCase} {...props} />} />
+            <Route path="/admin/cases/edit/:title" render={props => <EditCase {...props} />} />
           </Switch>
         </div>
       </Router>
@@ -68,3 +52,9 @@ componentDidMount() {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ fetchCases}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(App)

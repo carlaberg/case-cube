@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class AdminCaseItem extends Component {
   constructor(props){
@@ -10,10 +11,12 @@ class AdminCaseItem extends Component {
   }
 
   render() {
+    console.log(this.props);
+    const { title, caseId } = this.props.caseData
 
     return (
       <div>
-        <h3 onClick={this.onClick}>{this.props.caseData.title}</h3>
+        <Link to={`/admin/cases/edit/${caseId}`}><h3 onClick={this.onClick}>{title}</h3></Link>
       </div>
     );
   }

@@ -15,6 +15,7 @@ module.exports = {
       "**": "http://localhost:9090",
     }
   },
+  devtool: 'source-map',
   module: {
     loaders: [
 

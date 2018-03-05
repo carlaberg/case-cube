@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
+const autoIncrement = require('mongoose-auto-increment');
 
-mongoose.connect("mongodb://localhost:27017/test");
+mongoose.connect("mongodb://localhost:27017/casecube");
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
+
+// Initialize mongoose-auto-increment
+
+autoIncrement.initialize(mongoose.connection);
 
 //Import models
 

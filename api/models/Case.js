@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
 const caseSchema = new mongoose.Schema({
@@ -14,5 +15,8 @@ const caseSchema = new mongoose.Schema({
     required: "Please fill in a case description"
   }
 });
+
+caseSchema.plugin(autoIncrement.plugin, { model: 'Case', field: 'caseId', startAt: 1,
+    incrementBy: 1 });
 
 module.exports = mongoose.model("Case", caseSchema);

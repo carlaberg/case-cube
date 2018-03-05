@@ -5,4 +5,4 @@ const rootReducer = combineReducers({
     cases: caseReducer
 });
 
-export default rootreducer;
+export default rootReducer;

@@ -7,9 +7,6 @@ export default class ShowCaseData extends Component {
     super(props);
     this.renderCaseItem = this.renderCaseItem.bind(this);
   }
-  componentWillReceiveProps(nextProps){
-    // console.log(nextProps);
-  }
   renderCaseItem () {
     return (
       this.props.cases.map(item => <AdminCaseItem  key={item._id} caseData={item} onClick={this.props.selectCase} />)
