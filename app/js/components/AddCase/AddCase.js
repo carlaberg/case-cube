@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./AddCase.scss";
 import * as api from "../../apiFetchFunctions";
+import { addCase } from '../../actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-
-export default class AddCase extends React.Component  {
+class AddCase extends React.Component  {
 
   constructor(props) {
     super(props);
@@ -12,7 +14,8 @@ export default class AddCase extends React.Component  {
     this.state = {
       caseImageInputs: [],
       caseImageValues: [],
-      casePicsSrc: []
+      casePicsSrc: [],
+      heroSrc: ""
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,9 +38,7 @@ export default class AddCase extends React.Component  {
   }
 
   handleFileChange(event){
-
     event.persist();
-
 
     const name = event.target.getAttribute("name");
     const file = event.target.files[0];
@@ -48,12 +49,15 @@ export default class AddCase extends React.Component  {
 
     reader.onloadend = function (e) {
 
-        this.props.setCasePicsSrc(name, reader.result);
+        this.setCasePicsSrc(name, reader.result);
 
     }.bind(this)
+  }
 
-
-
+  setCasePicsSrc(id, url) {
+    this.setState({
+      heroSrc: url
+    })
   }
 
   handleSubmit(event) {
@@ -70,7 +74,7 @@ export default class AddCase extends React.Component  {
      }
 
 
-     this.props.handleCase(caseData);
+     this.props.addCase(caseData);
   }
 
   renderCaseImgs(){
@@ -84,7 +88,6 @@ export default class AddCase extends React.Component  {
 
 
   render() {
-    // console.log(this.state.casePicsSrc);
     let inputs = this.state.caseImageInputs;
     return (
       <div className="add-case">
@@ -99,7 +102,7 @@ export default class AddCase extends React.Component  {
             <label htmlFor="image">Huvudbild</label>
             <input className="form-control-file" ref="image" type="file" name="avatar" id="image" accept=".jpg" onChange={this.handleFileChange} />
           </div>
-          {this.props.heroSrc ? <img className="preview-hero" src={this.props.heroSrc} /> : ""}
+          {this.state.heroSrc ? <img className="preview-hero" src={this.state.heroSrc} /> : ""}
 
           <div className="form-group">
             <label htmlFor="title">Projekttitel</label>
@@ -141,8 +144,13 @@ export default class AddCase extends React.Component  {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ addCase }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(AddCase)
+
 AddCase.defaultProps = {
   casePicsSrc: [],
   heroSrc: null
-
 }
