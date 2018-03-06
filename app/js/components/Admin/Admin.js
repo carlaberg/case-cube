@@ -12,13 +12,12 @@ class Admin extends Component {
             <ShowCaseData {...this.props} />
           </div>
           <div className="col-6">
-            <AddCase setCasePicsSrc={this.setCasePicsSrc} {...this.props} />
+            <AddCase {...this.props} />
           </div>
         </div>
       </div>
     );
   }
-
 }
 
 Admin.defaultProps = {

@@ -33,9 +33,10 @@ exports.uploadToMemory = (req, res, next) => {
   })
 }
 
-const toDisk = multer({ storage: storage }).array('casePics');
+const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1}, {name: 'casePics', maxCount: 20}]);
 
 exports.upload = async (req, res, next) => {
+  console.log(req.files);
   toDisk(req, res, function (err) {
     if (err) {
       console.log(err.message);

@@ -33,16 +33,16 @@ export const uploadCasePics = async caseData => {
 export const addCase = async caseData => {
   console.log('nu har jag kommit till add case med redux');
   console.log(caseData);
-    // const formData = new FormData();
-    // formData.append('casePics', caseData.caseHeroImg);
-    // caseData.casePics.map(pic => formData.append('casePics', pic));
-    //
-    // let response = await fetch('/api/profile', {
-    //     method: 'POST',
-    //     body: formData
-    // });
-    // let imgData = await response.json();
-    //
+    const formData = new FormData();
+    formData.append('hero', caseData.caseHeroImg.fileData);
+    caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
+
+    let response = await fetch('/api/profile', {
+        method: 'POST',
+        body: formData
+    });
+    let imgData = await response.json();
+
     // const casePics = imgData
     //     .filter((img, index) => index != 0)
     //     .map(pic => pic.filename);
