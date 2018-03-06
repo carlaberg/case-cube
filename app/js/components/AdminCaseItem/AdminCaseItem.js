@@ -11,7 +11,6 @@ class AdminCaseItem extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { title, caseId } = this.props.caseData
 
     return (
