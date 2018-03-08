@@ -17,17 +17,9 @@ class AddCase extends React.Component  {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleImgChange = this.handleImgChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
-    // this.renderCaseImgs = this.renderCaseImgs.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
   }
-
-  // handleImgChange(event){
-  //   event.persist();
-  //   this.setState({caseImageValues: [...this.state.caseImageValues, event.target.files[0]]})
-  //   this.handleFileChange(event);
-  // }
 
   addFilePicker(event) {
 
@@ -104,16 +96,6 @@ class AddCase extends React.Component  {
 
      this.props.addCase(caseData);
   }
-
-  // renderCaseImgs(){
-  //   var inputs = this.state.caseImageInputs;
-  //
-  //   const newImageInput = `case-image${inputs.length + 1}`;
-  //
-  //
-  //   this.setState({caseImageInputs: [ ...inputs, newImageInput ]})
-  // }
-
 
   render() {
     console.log(this.state);

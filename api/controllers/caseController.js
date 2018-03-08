@@ -27,8 +27,6 @@ exports.uploadToMemory = (req, res, next) => {
     if (err) {
       console.log(err.message);
     }
-
-    console.log(req.file);
     res.send(req.file);
   })
 }
@@ -36,18 +34,26 @@ exports.uploadToMemory = (req, res, next) => {
 const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1}, {name: 'casePics', maxCount: 20}]);
 
 exports.upload = async (req, res, next) => {
-  console.log(req.files);
   toDisk(req, res, function (err) {
     if (err) {
       console.log(err.message);
     }
+    res.send(req.files);
+  })
+}
 
-    console.log(req.files);
+const singleToDisk = multer({ storage: storage }).array('hero', 20);
+exports.uploadSingle = async (req, res, next) => {
+  singleToDisk(req, res, function (err) {
+    if (err) {
+      console.log(err.message);
+    }
     res.send(req.files);
   })
 }
 
 exports.insertCase = async (req, res, next) => {
+  console.log(req.body);
   try{
     const newcase = new Case(req.body);
     await newcase.save();
@@ -56,11 +62,24 @@ exports.insertCase = async (req, res, next) => {
   } catch(err) {
     console.error(err.message);
   }
+};
 
+exports.updateCase = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.caseId);
+  try {
+    Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
+      if(err) {
+        console.log('Could not update Hero', err);
+      }
+      res.json(doc)
+    })
+  } catch(err) {
+      console.log(err.message);
+  }
 };
 
 exports.updateHero = async (req, res, next) => {
-    console.log(req.body);
     try {
         Case.findOneAndUpdate({caseId: req.body.id}, {$set: {caseHeroImg: req.body.hero}}, {new: true}, (err, doc) => {
             if(err) {
