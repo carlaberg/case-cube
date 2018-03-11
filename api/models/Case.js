@@ -8,7 +8,7 @@ const caseSchema = new mongoose.Schema({
     trim: true,
     required: "Please enter a case title."
   },
-  caseHeroImg: String,
+  caseHeroImg: {},
   casePics: Array,
   description: {
     type: String,

@@ -4,7 +4,6 @@ import * as api from "../apiFetchFunctions";
 export const fetchCases = () => {
   return async dispatch => {
     const cases = await api.getCases('/api/get-cases');
-
     try {
       return dispatch({
         type: FETCH_CASES,

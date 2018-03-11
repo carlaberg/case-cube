@@ -52,7 +52,9 @@ export const addCase = async caseData => {
 
     const dbObject = {
         title: caseData.title,
-        caseHeroImg: `/uploads/${imgData.hero[0].filename}`,
+        caseHeroImg: {
+          src: `/uploads/${imgData.hero[0].filename}`
+        },
         casePics,
         description: caseData.description
     };
@@ -107,7 +109,9 @@ export const updateCase = async caseData => {
     const dbObject = {
         caseId: caseData.caseId,
         title: caseData.title,
-        caseHeroImg: imgData.hero ? `/uploads/${imgData.hero[0].filename}` : caseData.caseHeroImg.src,
+        caseHeroImg: {
+          src: imgData.hero ? `/uploads/${imgData.hero[0].filename}` : caseData.caseHeroImg.src,
+        },
         casePics,
         description: caseData.description
     };

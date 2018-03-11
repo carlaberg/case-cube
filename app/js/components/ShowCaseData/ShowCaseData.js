@@ -9,12 +9,12 @@ export default class ShowCaseData extends Component {
   }
   renderCaseItem () {
     return (
-      this.props.cases.map(item => <AdminCaseItem  key={item._id} caseData={item} onClick={this.props.selectCase} />)
+      this.props.cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>)
     )
   }
 
   render() {
-
+    console.log(this.props);
     return (
       <div className="show-case-data">
 

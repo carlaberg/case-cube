@@ -10,30 +10,18 @@ import * as api from "../../apiFetchFunctions";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-        cases: [],
-        isSelected: null
-    }
-  }
-
   componentDidMount() {
     this.props.fetchCases();
-
-    api.getCases()
-      .then(response => {
-        this.setState({cases: response.reverse()})
-      })
   }
 
   render() {
+    console.log(this.props);
     return (
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" render={props => <ShowCaseData caseData={this.state.cases} {...props} />} />
-            <Route exact path="/admin/cases" render={props => <Admin cases={this.state.cases} {...props} />} />
+            <Route exact path="/" render={props => <ShowCaseData caseData={this.props.cases} {...props} />} />
+            <Route exact path="/admin/cases" render={props => <Admin cases={this.props.cases} {...props} />} />
             <Route path="/admin/cases/edit/:title" render={props => <EditCase {...props} />} />
           </Switch>
         </div>
@@ -42,8 +30,19 @@ class App extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ fetchCases}, dispatch);
+const mapStateToProps = state => {
+  const cases = Object.keys(state.cases).map(item => {
+    return state.cases[item]
+
+  })
+  
+  return {
+    cases
+  }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ fetchCases }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

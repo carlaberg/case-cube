@@ -5,11 +5,12 @@ import "./Admin.scss";
 
 class Admin extends Component {
   render() {
+    console.log(this.props.cases);
     return (
       <div className="container admin">
         <div className="row">
           <div className="col-6">
-            <ShowCaseData {...this.props} />
+            <ShowCaseData cases={this.props.cases} />
           </div>
           <div className="col-6">
             <AddCase {...this.props} />
