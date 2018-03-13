@@ -8,8 +8,14 @@ export default class ShowCaseData extends Component {
     this.renderCaseItem = this.renderCaseItem.bind(this);
   }
   renderCaseItem () {
+    const caseState = this.props.cases.cases
+    console.log(caseState);
+    const cases = Object.keys(caseState).map(item => {
+      return caseState[item]
+    });
+
     return (
-      this.props.cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>)
+      cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>)
     )
   }
 
@@ -20,7 +26,7 @@ export default class ShowCaseData extends Component {
 
        <h1>Mina Case</h1>
 
-       {this.props.cases ? this.renderCaseItem() : ""}
+       {this.props.cases.cases ? this.renderCaseItem() : ""}
       </div>
     )
   }

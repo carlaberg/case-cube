@@ -5,7 +5,6 @@ import "./Admin.scss";
 
 class Admin extends Component {
   render() {
-    console.log(this.props.cases);
     return (
       <div className="container admin">
         <div className="row">

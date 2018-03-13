@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 class AdminCaseItem extends Component {
 
   render() {
-    console.log(this.props);
     if(!this.props.caseData) {
       return ""
     }
     const { title, caseId } = this.props.caseData
-    console.log(title, caseId);
 
     return (
       <div>

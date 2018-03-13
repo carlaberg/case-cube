@@ -10,19 +10,15 @@ class EditCase extends React.Component {
   constructor(props) {
     super(props);
 
-
+    console.log(props);
 
     this.state = {
-      currentCase: props.cases[props.match.params.title] || "",
-      title: props.cases[props.match.params.title] ? props.cases[props.match.params.title].title : "",
-      description: props.cases[props.match.params.title] ? props.cases[props.match.params.title].description : "",
-      picCount: 0
-      // casePics: [],
-      // hero: {
-      //   src: props.cases
-      //     ? props.cases[props.match.params.title].caseHeroImg
-      //     : ''
-      // }
+      currentCase: props.cases.cases ? props.cases.cases[props.match.params.title] : "",
+      title: props.cases.cases ? props.cases.cases[props.match.params.title].title : "",
+      description: props.cases.cases ? props.cases.cases[props.match.params.title].description : "",
+      picCount: 0,
+      message: '',
+      messageType: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,34 +28,18 @@ class EditCase extends React.Component {
     this.handleTitleChange = this.handleTitleChange.bind(this);
   }
 
-  componentDidMount() {
-
-  }
-
   componentWillReceiveProps(nextProps) {
-    const currentCase = nextProps.cases[nextProps.match.params.title];
+    console.log(nextProps);
+    const currentCase = nextProps.cases.cases[nextProps.match.params.title];
 
     this.setState({
       title: currentCase.title,
       description: currentCase.description,
       currentCase,
-      picCount: currentCase.casePics.length
+      picCount: currentCase.casePics.length,
+      message: nextProps.cases.msg,
+      messageType: nextProps.cases.msgType,
     })
-
-
-
-    // const { title, description, casePics, caseHeroImg } = nextProps.cases[
-    //   nextProps.match.params.title
-    // ];
-    // this.setState({
-    //   title,
-    //   description,
-    //   picCount: casePics.length,
-    //   casePics: casePics,
-    //   hero: {
-    //     src: caseHeroImg
-    //   }
-    // });
   }
 
   addFilePicker(event) {
@@ -73,14 +53,6 @@ class EditCase extends React.Component {
         picCount: picNumber
       };
     });
-    // this.setState(prevState => {
-    //   const picNumber = prevState.picCount > 0 ? prevState.picCount + 1 : 1;
-    //   return {
-    //
-    //     casePics: [...prevState.casePics, { id: picNumber }],
-    //     picCount: picNumber
-    //   };
-    // });
   }
 
   handleFileChange(event) {
@@ -117,12 +89,6 @@ class EditCase extends React.Component {
         }
       }
     });
-    // this.setState({
-    //   hero: {
-    //     src: b64Url,
-    //     fileData
-    //   }
-    // });
   }
 
   updateCaseImgs(id, b64Url, fileData) {
@@ -132,52 +98,59 @@ class EditCase extends React.Component {
     const itemsBefore = casePics.slice(0, itemToModify);
     const itemsAfter = casePics.slice(itemToModify + 1);
 
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        currentCase: {
-          ...prevState.currentCase,
-          casePics: [...itemsBefore, { id, src: b64Url, fileData }, ...itemsAfter]
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          currentCase: {
+            ...prevState.currentCase,
+            casePics: [...itemsBefore, { id, src: b64Url, fileData }, ...itemsAfter]
+          }
         }
+      });
+  }
+
+  deleteImg(e, id) {
+    console.log(id);
+    const { currentCase, currentCase: { casePics } } = this.state;
+
+    const itemToModify = casePics.findIndex(pic => pic.id === id);
+    const itemsBefore = casePics.slice(0, itemToModify);
+    const itemsAfter = casePics.slice(itemToModify + 1);
+
+    this.setState({
+      currentCase: {
+        ...currentCase,
+        casePics: [...itemsBefore, ...itemsAfter]
       }
-    });
-    //   return {
-    //     ...prevState,
-    //     casePics: [...itemsBefore, { id, src: b64Url, fileData }, ...itemsAfter]
-    //   }
-    // });
+    })
   }
 
   handleSubmit(event) {
-    // event.preventDefault();
-    // console.log(event.target);
-    // const { hero, casePics } = this.state;
-    //
-    // const caseData = {
-    //   caseId: this.props.cases[this.props.match.params.title].caseId,
-    //   title: this.refs.title.value,
-    //   caseHeroImg: hero,
-    //   casePics,
-    //   description: this.refs.description.value
-    // };
-    //
-    // this.props.updateCase(caseData);
-    //
-    //
-    //
-    //
-
-
-    event.preventDefault();
-
     const { currentCase } = this.state;
-    this.props.updateCase(currentCase);
+
+    const casePicsValid = currentCase.casePics.filter(pic => pic.src === undefined);
+
+    console.log(casePicsValid);
+    event.preventDefault();
+    if(!this.title.validity.valid ||
+      !this.description.validity.valid ||
+      !currentCase.caseHeroImg.src ||
+      casePicsValid.length > 0) {
+      this.setState({
+        messageType: 'danger',
+        message: 'Please fill in the form'
+      })
+
+    } else {
+      this.props.updateCase(currentCase);
+      this.setState({
+        message: ""
+      })
+    }
+
   }
 
   handleTitleChange(e) {
-    // this.setState({
-    //   title: e.target.value
-    // });
 
     this.setState({
       ...this.state,
@@ -201,11 +174,11 @@ class EditCase extends React.Component {
   render() {
     console.log(this.props);
     console.log(this.state);
-    if (!this.props.cases[this.props.match.params.title]) {
+    if (!this.props.cases.cases) {
       return '';
     }
-    const { casePics } = this.state.currentCase;
-    const caseItem = this.props.cases[this.props.match.params.title];
+    const { currentCase, currentCase: { casePics } } = this.state
+    const caseItem = this.props.cases.cases[this.props.match.params.title];
 
     return (
       <div className="edit-case">
@@ -235,7 +208,7 @@ class EditCase extends React.Component {
               accept=".jpg"
               onChange={this.handleFileChange}
             />
-            <img className="preview-hero" src={this.state.currentCase.caseHeroImg.src} />
+            <img className="preview-hero" src={currentCase.caseHeroImg && currentCase.caseHeroImg.src} />
           </div>
           <button className="btn btn-success" type="submit">
             Save Hero
@@ -243,6 +216,7 @@ class EditCase extends React.Component {
         </form>
 
         <form
+          noValidate
           ref="caseForm"
           name="case-form"
           id="case-form"
@@ -254,12 +228,13 @@ class EditCase extends React.Component {
             <label htmlFor="title">Projekttitel</label>
             <input
               className="form-control"
-              ref="title"
+              ref={title => this.title = title}
               type="text"
               name="title"
               id="title"
               value={this.state.currentCase.title}
               onChange={this.handleTitleChange}
+              required
             />
           </div>
 
@@ -267,12 +242,13 @@ class EditCase extends React.Component {
             <label htmlFor="description">Beskrivning</label>
             <textarea
               className="form-control"
-              ref="description"
+              ref={description => this.description = description}
               type="text"
               name="description"
               id="description"
               onChange={this.handleDescChange}
               value={this.state.currentCase.description}
+              required
             />
           </div>
 
@@ -282,6 +258,7 @@ class EditCase extends React.Component {
             ? casePics.map((pic, index) => {
                 return (
                   <div key={index} className="form-group">
+                    <button className="btn btn-danger" type="button" id="delete-image" onClick={e => this.deleteImg(e, index + 1)}>Delete image</button>
                     <input
                       className="form-control-file"
                       type="file"
@@ -312,6 +289,11 @@ class EditCase extends React.Component {
           <button className="btn btn-success" type="submit">
             Save
           </button>
+          {this.state.message && <div className={`message${this.state.messageType && ' message--' + this.state.messageType}`}>
+              {this.state.message}
+              <div className="message__close" onClick={() => { this.setState({message: ""})}}>+</div>
+            </div>
+          }
         </form>
       </div>
     );
@@ -319,9 +301,8 @@ class EditCase extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    cases: state.cases
-  };
+
+  return { cases: state.cases }
 };
 
 const mapDispatchToProps = dispatch => {

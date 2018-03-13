@@ -31,8 +31,6 @@ export const uploadCasePics = async caseData => {
 };
 
 export const addCase = async caseData => {
-  console.log('nu har jag kommit till add case med redux');
-  console.log(caseData);
     const formData = new FormData();
     formData.append('hero', caseData.caseHeroImg.fileData);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
@@ -42,7 +40,6 @@ export const addCase = async caseData => {
         body: formData
     });
     let imgData = await response.json();
-    console.log(imgData);
     const casePics = caseData.casePics.map((item, index) => {
       return {
         id: item.id,
@@ -69,7 +66,6 @@ export const addCase = async caseData => {
 };
 
 export const updateCase = async caseData => {
-    console.log(caseData);
     const formData = new FormData();
     if(caseData.caseHeroImg.fileData) {
       formData.append('hero', caseData.caseHeroImg.fileData);
@@ -86,7 +82,6 @@ export const updateCase = async caseData => {
     });
     let imgData = await response.json();
 
-    console.log(imgData);
     let count = 0;
     const casePics = caseData.casePics.map((item, index) => {
 

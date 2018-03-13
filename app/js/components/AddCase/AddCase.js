@@ -98,7 +98,6 @@ class AddCase extends React.Component  {
   }
 
   render() {
-    console.log(this.state);
     const { casePics } = this.state;
     return (
       <div className="add-case">

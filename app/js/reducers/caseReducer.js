@@ -5,20 +5,34 @@ export const caseReducer = (state={}, action) => {
   switch(action.type) {
 
     case FETCH_CASES:
-      const caseObject = {}
+      const caseObject = {cases:{}}
       action.payload.map(item => {
-        Object.assign(caseObject, {[item.caseId]: item})
+        Object.assign(caseObject.cases, {[item.caseId]: item})
       })
+      console.log(caseObject);
       return caseObject
 
     case ADD_CASE:
-      return {
-        ...state, [action.payload.caseId]: action.payload
-      }
+    return {
+      ...state,
+      cases: {
+        ...state.cases,
+        [action.payload.caseId]: action.payload
+      },
+      msg: 'Case was successfully saved to the database!',
+      msgType: 'success'
+    }
 
     case UPDATE_CASE:
-      const newUpdateCaseState = { ...state, [action.payload.caseId]: action.payload }
-      return newUpdateCaseState
+      return {
+        ...state,
+        cases: {
+          ...state.cases,
+          [action.payload.caseId]: action.payload
+        },
+        msg: 'Case was successfully updated!',
+        msgType: 'success'
+      }
 
     case UPDATE_HERO:
       const newState = { ...state, [action.payload.caseId]: action.payload }

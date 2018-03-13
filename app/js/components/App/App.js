@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.cases);
     return (
       <Router>
         <div>
@@ -31,14 +31,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const cases = Object.keys(state.cases).map(item => {
-    return state.cases[item]
-
-  })
-  
-  return {
-    cases
-  }
+  return { cases: state.cases };
 }
 
 const mapDispatchToProps = dispatch => {

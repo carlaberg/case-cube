@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Case = mongoose.model("Case");
 const multer = require("multer");
+const removeUnusedImgs = require('../utils/removeUnusedImgs');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -12,8 +13,10 @@ const storage = multer.diskStorage({
 })
 
 exports.getCases = async (req, res) => {
+
   try {
     const cases = await Case.find();
+
     res.json(cases);
   } catch(err) {
     console.error(err.message);
@@ -53,15 +56,18 @@ exports.uploadSingle = async (req, res, next) => {
 }
 
 exports.insertCase = async (req, res, next) => {
+
   console.log(req.body);
   try{
     const newcase = new Case(req.body);
     await newcase.save();
+    // removeUnusedImgs();
     res.json(newcase);
     console.log("case saved");
   } catch(err) {
     console.error(err.message);
   }
+
 };
 
 exports.updateCase = async (req, res, next) => {
