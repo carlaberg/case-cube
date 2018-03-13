@@ -1,4 +1,4 @@
-import { FETCH_CASES, ADD_CASE, UPDATE_CASE, UPDATE_HERO } from '../utils/types';
+import { FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE, UPDATE_HERO } from '../utils/types';
 import * as api from "../apiFetchFunctions";
 
 export const fetchCases = () => {
@@ -51,6 +51,25 @@ export const updateCase = values => {
       return dispatch({
         type: UPDATE_CASE,
         payload: updatedCase
+      })
+    } catch (err) {
+        console.log(err);
+    }
+  }
+}
+
+export const deleteCase = (id, callback) => {
+
+  return async dispatch => {
+    const deletedCase = await api.deleteCase(id);
+
+    // Redirect to case listing after deletion
+    callback();
+    
+    try {
+      return dispatch({
+        type: DELETE_CASE,
+        payload: id
       })
     } catch (err) {
         console.log(err);

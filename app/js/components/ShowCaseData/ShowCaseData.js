@@ -15,7 +15,7 @@ export default class ShowCaseData extends Component {
     });
 
     return (
-      cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>)
+      cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>).reverse()
     )
   }
 

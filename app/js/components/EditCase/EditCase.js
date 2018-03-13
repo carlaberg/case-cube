@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import * as api from '../../apiFetchFunctions';
-import { updateHero, updateCase } from '../../actions';
+import { updateHero, updateCase, deleteCase } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './EditCase.scss';
@@ -117,12 +117,25 @@ class EditCase extends React.Component {
     const itemsBefore = casePics.slice(0, itemToModify);
     const itemsAfter = casePics.slice(itemToModify + 1);
 
-    this.setState({
-      currentCase: {
-        ...currentCase,
-        casePics: [...itemsBefore, ...itemsAfter]
+    const newPics = [...itemsBefore, ...itemsAfter];
+
+    const picsNewId = newPics.map((pic, index) => {
+      return {
+        ...pic,
+        id: index + 1
       }
     })
+
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        currentCase: {
+          ...prevState.currentCase,
+          casePics: picsNewId
+        },
+        picCount: picsNewId.length
+      }
+    });
   }
 
   handleSubmit(event) {
@@ -289,6 +302,11 @@ class EditCase extends React.Component {
           <button className="btn btn-success" type="submit">
             Save
           </button>
+          <button type="button" className="btn btn-danger" onClick={() => {
+            this.props.deleteCase(this.state.currentCase.caseId, () => {
+              this.props.history.push('/admin/cases');
+            })
+          }}>Delete case</button>
           {this.state.message && <div className={`message${this.state.messageType && ' message--' + this.state.messageType}`}>
               {this.state.message}
               <div className="message__close" onClick={() => { this.setState({message: ""})}}>+</div>
@@ -306,6 +324,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ updateHero, updateCase }, dispatch);
+  return bindActionCreators({ updateHero, updateCase, deleteCase }, dispatch);
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditCase);

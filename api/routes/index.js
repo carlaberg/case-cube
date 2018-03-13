@@ -28,4 +28,8 @@ router.put("/api/update-case", caseController.updateCase);
 
 router.put("/api/update-hero", caseController.updateHero);
 
+// Delete
+
+router.delete("/api/delete-case", caseController.deleteCase);
+
 module.exports = router;

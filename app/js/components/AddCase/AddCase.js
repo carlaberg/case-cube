@@ -13,12 +13,21 @@ class AddCase extends React.Component  {
     this.state = {
       picCount: 0,
       casePics: [],
-      hero: {}
+      hero: {},
+      message: '',
+      messageType: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      message: nextProps.cases.msg,
+      messageType: nextProps.cases.msgType
+    })
   }
 
   addFilePicker(event) {
@@ -83,45 +92,63 @@ class AddCase extends React.Component  {
   }
 
   handleSubmit(event) {
+    const { hero, casePics } = this.state;
     event.preventDefault();
 
-    const { hero, casePics } = this.state;
+    const inputs = Array.from(this.caseForm.querySelectorAll('input'));
+    const textAreas = Array.from(this.caseForm.querySelectorAll('textarea'));
+    const allInputs = [...inputs, ...textAreas];
+    const falseYinputs = allInputs.filter(input => !input.validity.valid);
 
-     const caseData = {
-       title: this.refs.title.value,
-       caseHeroImg: hero,
-       casePics,
-       description: this.refs.description.value
-     }
+    if(falseYinputs.length > 0) {
+      this.setState({
+        message: 'Please fill out all the fields in the form.',
+        messageType: 'danger'
+      })
+    } else {
+      const caseData = {
+        title: this.refs.title.value,
+        caseHeroImg: hero,
+        casePics,
+        description: this.refs.description.value
+      }
+      this.props.addCase(caseData);
+      this.caseForm.reset();
+      this.setState({
+        hero: {},
+        casePics: []
+      })
+    }
 
-     this.props.addCase(caseData);
   }
 
   render() {
     const { casePics } = this.state;
+    console.log(this.state);
+    console.log(this.props);
     return (
       <div className="add-case">
 
          <h1>Nytt Case</h1>
 
-        <form ref="caseForm" name="case-form" id="case-form" method="POST" onSubmit={this.handleSubmit} encType="multipart/form-data">
+        <form noValidate ref={caseForm => this.caseForm = caseForm} name="case-form" id="case-form" method="POST" onSubmit={this.handleSubmit} encType="multipart/form-data">
 
           <input type="hidden" name="case-id" value="" />
 
           <div className="form-group">
             <label htmlFor="image">Huvudbild</label>
-            <input className="form-control-file" ref="image" type="file" name="hero-image" id="image" accept=".jpg" onChange={this.handleFileChange} />
+            <input className="form-control-file" ref="image" type="file" name="hero-image" id="image" accept=".jpg" onChange={this.handleFileChange} required/>
           </div>
           {this.state.hero.src && <img className="preview-hero" src={this.state.hero.src} />}
 
           <div className="form-group">
             <label htmlFor="title">Projekttitel</label>
-            <input className="form-control" ref="title" type="text" name="title" id="title" />
+            <input className="form-control" ref="title" type="text" name="title" id="title" required/>
           </div>
 
           <div className="form-group">
             <label htmlFor="description">Beskrivning</label>
-            <textarea className="form-control" ref="description" type="text" name="description" id="description" />
+            <textarea className="form-control" ref="description" type="text" name="description" id="description" required/>
           </div>
 
           <h4>Showcasebilder</h4>
@@ -130,6 +157,7 @@ class AddCase extends React.Component  {
             return (
               <div key={index} className="form-group">
                 <input
+                  required
                   className="form-control-file"
                   type="file"
                   id={index + 1}
@@ -147,6 +175,11 @@ class AddCase extends React.Component  {
           </div>
 
           <button className="btn btn-success" type="submit">Save</button>
+          {this.state.message && <div className={`message${this.state.messageType && ' message--' + this.state.messageType}`}>
+              {this.state.message}
+              <div className="message__close" onClick={() => { this.setState({message: ""})}}>+</div>
+            </div>
+          }
         </form>
 
       </div>
@@ -154,11 +187,16 @@ class AddCase extends React.Component  {
   }
 }
 
+
+const mapStateToProps = state => {
+  return { cases: state.cases }
+}
+
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({ addCase }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(AddCase)
+export default connect(mapStateToProps, mapDispatchToProps)(AddCase)
 
 AddCase.defaultProps = {
   casePicsSrc: [],

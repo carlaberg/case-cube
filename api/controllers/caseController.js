@@ -61,7 +61,6 @@ exports.insertCase = async (req, res, next) => {
   try{
     const newcase = new Case(req.body);
     await newcase.save();
-    // removeUnusedImgs();
     res.json(newcase);
     console.log("case saved");
   } catch(err) {
@@ -71,15 +70,31 @@ exports.insertCase = async (req, res, next) => {
 };
 
 exports.updateCase = async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.body.caseId);
+
   try {
     Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
       if(err) {
-        console.log('Could not update Hero', err);
+        console.log('Could not update case', err);
       }
+      removeUnusedImgs();
       res.json(doc)
     })
+  } catch(err) {
+      console.log(err.message);
+  }
+};
+
+exports.deleteCase = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.id);
+  try {
+    Case.remove({caseId: req.body.id}, (err, doc) => {
+      if(err) {
+        console.log('Could not remove', err);
+      }
+      removeUnusedImgs();
+      res.json(doc)
+    });
   } catch(err) {
       console.log(err.message);
   }

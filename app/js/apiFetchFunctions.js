@@ -147,3 +147,18 @@ export const updateHero = async (id, hero) => {
         headers: headers
     }).then(resp => resp.json());
 };
+
+export const deleteCase = id => {
+
+  const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Methods': 'DELETE',
+  });
+
+  return fetch('/api/delete-case', {
+      method: 'DELETE',
+      body: JSON.stringify({id}),
+      headers: headers
+  }).then(resp => resp.json());
+
+}
