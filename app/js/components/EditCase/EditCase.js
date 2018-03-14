@@ -10,13 +10,13 @@ class EditCase extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props);
+    const { cases } = props.cases;
 
     this.state = {
-      currentCase: props.cases.cases ? props.cases.cases[props.match.params.title] : "",
-      title: props.cases.cases ? props.cases.cases[props.match.params.title].title : "",
-      description: props.cases.cases ? props.cases.cases[props.match.params.title].description : "",
-      picCount: 0,
+      currentCase: cases ? cases[props.match.params.title] : "",
+      title: cases ? cases[props.match.params.title].title : "",
+      description: cases ? cases[props.match.params.title].description : "",
+      picCount: cases ? cases[props.match.params.title].casePics.length : "",
       message: '',
       messageType: ''
     };

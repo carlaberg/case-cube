@@ -24,7 +24,7 @@ require("./api/models/Case");
 // Start our app!
 const server = require('./server');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9090;
 
 server.listen(PORT, () => {
   console.log(`server listening to port ${PORT}`);
