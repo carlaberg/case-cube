@@ -29,7 +29,6 @@ class EditCase extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     const currentCase = nextProps.cases.cases[nextProps.match.params.title];
 
     this.setState({
@@ -143,7 +142,6 @@ class EditCase extends React.Component {
 
     const casePicsValid = currentCase.casePics.filter(pic => pic.src === undefined);
 
-    console.log(casePicsValid);
     event.preventDefault();
     if(!this.title.validity.valid ||
       !this.description.validity.valid ||
@@ -185,8 +183,7 @@ class EditCase extends React.Component {
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state);
+  
     if (!this.props.cases.cases) {
       return '';
     }
