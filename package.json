@@ -4,10 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --open",
+    "devserver": "webpack-dev-server --open",
     "dev2": "webpack -wd",
     "custom:server": "node start.js --exec babel-node",
-    "start": "concurrently 'npm run dev' 'npm run custom:server'"
+    "dev": "concurrently 'npm run dev' 'npm run custom:server'",
+    "start": "npm run custom:server"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
