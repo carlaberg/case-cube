@@ -25,7 +25,6 @@ export default class ShowCaseData extends Component {
       <div className="show-case-data">
 
        <h1>Mina Case</h1>
-
        {this.props.cases.cases ? this.renderCaseItem() : ""}
       </div>
     )
