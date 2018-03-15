@@ -79,7 +79,7 @@ exports.insertCase = async (req, res, next) => {
 };
 
 exports.updateCase = async (req, res, next) => {
-
+  
   try {
     Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
       if(err) {

@@ -49,16 +49,16 @@ export const addCase = async caseData => {
         src: savedImgs.casePics[index]['secure_url']
       }
     });
-
+    console.log('52', savedImgs);
     const dbObject = {
         title: caseData.title,
         caseHeroImg: {
-          src: savedImgs.hero['secure_url']
+          src: savedImgs.hero[0]['secure_url']
         },
         casePics,
         description: caseData.description
     };
-
+    console.log('61', dbObject);
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     return fetch('/api/insert-case', {
@@ -86,7 +86,6 @@ export const updateCase = async caseData => {
     });
     let savedImgs = await response.json();
 
-    console.log(savedImgs);
     let count = 0;
     const casePics = caseData.casePics.map((item, index) => {
 
@@ -111,7 +110,7 @@ export const updateCase = async caseData => {
         caseId: caseData.caseId,
         title: caseData.title,
         caseHeroImg: {
-          src: savedImgs.hero ? savedImgs.hero['secure_url'] : caseData.caseHeroImg.src,
+          src: savedImgs.hero[0] ? savedImgs.hero[0]['secure_url'] : caseData.caseHeroImg.src,
         },
         casePics,
         description: caseData.description

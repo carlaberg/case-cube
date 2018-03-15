@@ -37,13 +37,12 @@ const promisifyImageUpload = async imageObject => {
         const savedImages = await Promise.all(uploadPromises)
 
         const casePics = savedImages.filter(img => img.caseImageType === 'casePic');
+        const hero = savedImages.filter(img => img.caseImageType === 'hero');
 
-        const responseObject = {
-            hero: savedImages[0],
-            casePics
-        }
+        // Respopnse object to send back to client
+        return { hero, casePics }
 
-        return responseObject;
+
     } catch (err) {
         console.error(err.message);
     }
