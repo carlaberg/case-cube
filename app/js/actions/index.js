@@ -44,10 +44,11 @@ export const updateHero = (id, values) => {
 }
 
 export const updateCase = values => {
-  console.log(values);
+
   return async dispatch => {
     const updatedCase = await api.updateCase(values);
     try {
+      console.log(updatedCase);
       return dispatch({
         type: UPDATE_CASE,
         payload: updatedCase
@@ -65,7 +66,7 @@ export const deleteCase = (id, callback) => {
 
     // Redirect to case listing after deletion
     callback();
-    
+
     try {
       return dispatch({
         type: DELETE_CASE,

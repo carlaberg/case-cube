@@ -31,6 +31,7 @@ export const uploadCasePics = async caseData => {
 };
 
 export const addCase = async caseData => {
+  console.log(caseData);
     const formData = new FormData();
     formData.append('hero', caseData.caseHeroImg.fileData);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
@@ -39,18 +40,20 @@ export const addCase = async caseData => {
         method: 'POST',
         body: formData
     });
-    let imgData = await response.json();
+
+    const savedImgs = await response.json();
+
     const casePics = caseData.casePics.map((item, index) => {
       return {
         id: item.id,
-        src: `/uploads/${imgData.casePics[index].filename}`
+        src: savedImgs.casePics[index]['secure_url']
       }
     });
 
     const dbObject = {
         title: caseData.title,
         caseHeroImg: {
-          src: `/uploads/${imgData.hero[0].filename}`
+          src: savedImgs.hero['secure_url']
         },
         casePics,
         description: caseData.description
@@ -66,6 +69,7 @@ export const addCase = async caseData => {
 };
 
 export const updateCase = async caseData => {
+
     const formData = new FormData();
     if(caseData.caseHeroImg.fileData) {
       formData.append('hero', caseData.caseHeroImg.fileData);
@@ -80,17 +84,19 @@ export const updateCase = async caseData => {
         method: 'POST',
         body: formData
     });
-    let imgData = await response.json();
+    let savedImgs = await response.json();
 
+    console.log(savedImgs);
     let count = 0;
     const casePics = caseData.casePics.map((item, index) => {
 
+      // Only update the images that have changed (received new fileData when user picked a new file)
       if(item.fileData) {
-          const fileName = imgData.casePics[count].filename;
+          const fileName = savedImgs.casePics[count]['secure_url'];
           count++
           return {
               id: item.id,
-              src: `/uploads/${fileName}`
+              src: fileName
           }
       } else {
           return {
@@ -105,7 +111,7 @@ export const updateCase = async caseData => {
         caseId: caseData.caseId,
         title: caseData.title,
         caseHeroImg: {
-          src: imgData.hero ? `/uploads/${imgData.hero[0].filename}` : caseData.caseHeroImg.src,
+          src: savedImgs.hero ? savedImgs.hero['secure_url'] : caseData.caseHeroImg.src,
         },
         casePics,
         description: caseData.description

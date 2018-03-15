@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Case = mongoose.model("Case");
 const multer = require("multer");
 const removeUnusedImgs = require('../utils/removeUnusedImgs');
+const promisifyImageUpload = require('../utils/promisifyImageUpload');
+const cloudinary = require('cloudinary');
 
 const storage = multer.diskStorage({
   destination: './public/uploads',
@@ -35,11 +37,20 @@ exports.uploadToMemory = (req, res, next) => {
 const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1}, {name: 'casePics', maxCount: 20}]);
 
 exports.upload = async (req, res, next) => {
-  toDisk(req, res, function (err) {
+  toDisk(req, res, async function (err) {
     if (err) {
       console.log(err.message);
     }
-    res.send(req.files);
+
+    try {
+
+      const images = await promisifyImageUpload(req.files);
+
+      res.send(images);
+
+    } catch (err) {
+      console.error(err.message);
+    }
   })
 }
 

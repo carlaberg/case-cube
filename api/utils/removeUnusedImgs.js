@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Case = mongoose.model("Case");
 const fs = require('fs');
 
-removeUnusedImgs = async () => {
+const removeUnusedImgs = async () => {
 
   try {
     const cases = await Case.find({}, {'caseHeroImg.src': 1, 'casePics': 1, '_id': 0});
