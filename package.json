@@ -9,7 +9,7 @@
     "custom:server": "node start.js --exec babel-node",
     "custom:localserver": "nodemon start.js --exec babel-node",
     "dev": "concurrently 'npm run devserver' 'npm run custom:localserver'",
-    "start": "npm run custom:server"
+    "start": "concurrently 'npm run custom:server' 'npm run webpack'"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
