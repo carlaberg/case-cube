@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Case = mongoose.model("Case");
 const multer = require("multer");
 const removeUnusedImgs = require('../utils/removeUnusedImgs');
+const removeUnusedImgsCloudinary = require('../utils/removeUnusedImgsCloudinary');
 const promisifyImageUpload = require('../utils/promisifyImageUpload');
 const cloudinary = require('cloudinary');
 
@@ -79,13 +80,14 @@ exports.insertCase = async (req, res, next) => {
 };
 
 exports.updateCase = async (req, res, next) => {
-  
+
   try {
     Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
       if(err) {
         console.log('Could not update case', err);
       }
       removeUnusedImgs();
+      removeUnusedImgsCloudinary();
       res.json(doc)
     })
   } catch(err) {
@@ -102,6 +104,7 @@ exports.deleteCase = async (req, res, next) => {
         console.log('Could not remove', err);
       }
       removeUnusedImgs();
+      removeUnusedImgsCloudinary();
       res.json(doc)
     });
   } catch(err) {

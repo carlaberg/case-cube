@@ -46,14 +46,16 @@ export const addCase = async caseData => {
     const casePics = caseData.casePics.map((item, index) => {
       return {
         id: item.id,
-        src: savedImgs.casePics[index]['secure_url']
+        src: savedImgs.casePics[index]['secure_url'],
+        publicId: savedImgs.casePics[index]['public_id']
       }
     });
     console.log('52', savedImgs);
     const dbObject = {
         title: caseData.title,
         caseHeroImg: {
-          src: savedImgs.hero[0]['secure_url']
+          src: savedImgs.hero[0]['secure_url'],
+          publicId: savedImgs.hero[0]['public_id']
         },
         casePics,
         description: caseData.description
@@ -91,16 +93,16 @@ export const updateCase = async caseData => {
 
       // Only update the images that have changed (received new fileData when user picked a new file)
       if(item.fileData) {
-          const fileName = savedImgs.casePics[count]['secure_url'];
+          const src = savedImgs.casePics[count]['secure_url'];
+          const publicId = savedImgs.casePics[count]['public_id'];
           count++
-          return {
-              id: item.id,
-              src: fileName
-          }
+          return {id: item.id, src, publicId }
+      // If user hasn't choosen a new img resave the old one
       } else {
           return {
               id: item.id,
-              src: item.src
+              src: item.src,
+              publicId: item.publicId
           }
       }
 
@@ -111,6 +113,7 @@ export const updateCase = async caseData => {
         title: caseData.title,
         caseHeroImg: {
           src: savedImgs.hero[0] ? savedImgs.hero[0]['secure_url'] : caseData.caseHeroImg.src,
+          publicId: savedImgs.hero[0] ? savedImgs.hero[0]['public_id'] : caseData.caseHeroImg.publicId,
         },
         casePics,
         description: caseData.description

@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const Case = mongoose.model("Case");
 const multer = require("multer");
 
-
 const router = express.Router();
 
 // Get

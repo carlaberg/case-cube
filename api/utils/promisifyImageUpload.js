@@ -1,4 +1,5 @@
 const cloudinary = require('cloudinary');
+require('dotenv').config();
 cloudinary.config({
   cloud_name: 'dhtmefcoz',
   api_key: '926247886774172',
@@ -13,7 +14,7 @@ const promisifyImageUpload = async imageObject => {
 
         imageObject[prop].forEach(img => {
             const uploadPromise = new Promise((resolve, reject) => {
-                cloudinary.v2.uploader.upload(img.path, function(error,result) {
+                cloudinary.v2.uploader.upload(img.path, {folder: process.env.IMAGE_FOLDER}, function(error,result) {
                     if(error) {
 
                         reject(error.message);
