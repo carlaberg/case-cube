@@ -110,7 +110,8 @@ class AddCase extends React.Component  {
         title: this.refs.title.value,
         caseHeroImg: hero,
         casePics,
-        description: this.refs.description.value
+        description: this.refs.description.value,
+        order: parseInt(this.refs.order.value)
       }
       this.props.addCase(caseData);
       this.caseForm.reset();
@@ -147,6 +148,11 @@ class AddCase extends React.Component  {
           <div className="form-group">
             <label htmlFor="description">Beskrivning</label>
             <textarea className="form-control" ref="description" type="text" name="description" id="description" required/>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="order">Order</label>
+            <input className="form-control" ref="order" type="number" name="order" id="order"/>
           </div>
 
           <h4>Showcasebilder</h4>

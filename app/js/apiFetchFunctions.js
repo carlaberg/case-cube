@@ -58,7 +58,8 @@ export const addCase = async caseData => {
           publicId: savedImgs.hero[0]['public_id']
         },
         casePics,
-        description: caseData.description
+        description: caseData.description,
+        order: caseData.order
     };
     console.log('61', dbObject);
     const headers = new Headers({ 'Content-Type': 'application/json' });
@@ -116,7 +117,8 @@ export const updateCase = async caseData => {
           publicId: savedImgs.hero[0] ? savedImgs.hero[0]['public_id'] : caseData.caseHeroImg.publicId,
         },
         casePics,
-        description: caseData.description
+        description: caseData.description,
+        order: caseData.order
     };
 
     const headers = new Headers({

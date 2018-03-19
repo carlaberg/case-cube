@@ -14,8 +14,6 @@ class EditCase extends React.Component {
 
     this.state = {
       currentCase: cases ? cases[props.match.params.title] : "",
-      title: cases ? cases[props.match.params.title].title : "",
-      description: cases ? cases[props.match.params.title].description : "",
       picCount: cases ? cases[props.match.params.title].casePics.length : "",
       message: '',
       messageType: ''
@@ -24,16 +22,13 @@ class EditCase extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
-    this.handleDescChange = this.handleDescChange.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     const currentCase = nextProps.cases.cases[nextProps.match.params.title];
 
     this.setState({
-      title: currentCase.title,
-      description: currentCase.description,
       currentCase,
       picCount: currentCase.casePics.length,
       message: nextProps.cases.msg,
@@ -161,29 +156,21 @@ class EditCase extends React.Component {
 
   }
 
-  handleTitleChange(e) {
-
+  handleInputChange(e) {
+    const name = e.target.name;
     this.setState({
       ...this.state,
       currentCase: {
         ...this.state.currentCase,
-        title: e.target.value
-      }
-    });
-  }
-
-  handleDescChange(e) {
-    this.setState({
-      ...this.state,
-      currentCase: {
-        ...this.state.currentCase,
-        description: e.target.value
+        title: name === 'title' ? e.target.value : this.state.currentCase.title,
+        description: name === 'description' ? e.target.value : this.state.currentCase.description,
+        order: name === 'order' ? e.target.value : this.state.currentCase.order,
       }
     });
   }
 
   render() {
-  
+    console.log(this.state);
     if (!this.props.cases.cases) {
       return '';
     }
@@ -243,7 +230,7 @@ class EditCase extends React.Component {
               name="title"
               id="title"
               value={this.state.currentCase.title}
-              onChange={this.handleTitleChange}
+              onChange={this.handleInputChange}
               required
             />
           </div>
@@ -256,10 +243,15 @@ class EditCase extends React.Component {
               type="text"
               name="description"
               id="description"
-              onChange={this.handleDescChange}
+              onChange={this.handleInputChange}
               value={this.state.currentCase.description}
               required
             />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="order">Order</label>
+            <input className="form-control" ref="order" type="number" name="order" id="order" value={this.state.currentCase.order} onChange={this.handleInputChange}/>
           </div>
 
           <h4>Showcasebilder</h4>

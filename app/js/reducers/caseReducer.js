@@ -9,7 +9,7 @@ export const caseReducer = (state={}, action) => {
       action.payload.map(item => {
         Object.assign(caseObject.cases, {[item.caseId]: item})
       })
-      console.log(caseObject);
+
       return caseObject
 
     case ADD_CASE:

@@ -13,7 +13,8 @@ const caseSchema = new mongoose.Schema({
   description: {
     type: String,
     required: "Please fill in a case description"
-  }
+  },
+  order: Number
 });
 
 caseSchema.plugin(autoIncrement.plugin, { model: 'Case', field: 'caseId', startAt: 1,
