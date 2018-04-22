@@ -31,9 +31,10 @@ export const uploadCasePics = async caseData => {
 };
 
 export const addCase = async caseData => {
-  console.log(caseData);
+  
     const formData = new FormData();
     formData.append('hero', caseData.caseHeroImg.fileData);
+    formData.append('video', caseData.caseVideo);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
 
     let response = await fetch('/api/profile', {
@@ -47,21 +48,28 @@ export const addCase = async caseData => {
       return {
         id: item.id,
         src: savedImgs.casePics[index]['secure_url'],
+        caption: caseData.casePics[index].caption,
         publicId: savedImgs.casePics[index]['public_id']
       }
     });
-    console.log('52', savedImgs);
+
     const dbObject = {
         title: caseData.title,
         caseHeroImg: {
           src: savedImgs.hero[0]['secure_url'],
-          publicId: savedImgs.hero[0]['public_id']
+          caption: caseData.caseHeroImg.caption,
+          publicId: savedImgs.hero[0]['public_id']          
+        },
+        caseVideo: {
+          src: savedImgs.video[0]['secure_url'],
+          publicId: savedImgs.video[0]['public_id']
         },
         casePics,
         description: caseData.description,
         order: caseData.order
     };
-    console.log('61', dbObject);
+
+
     const headers = new Headers({ 'Content-Type': 'application/json' });
 
     return fetch('/api/insert-case', {
@@ -72,11 +80,16 @@ export const addCase = async caseData => {
 };
 
 export const updateCase = async caseData => {
-
+  
     const formData = new FormData();
     if(caseData.caseHeroImg.fileData) {
       formData.append('hero', caseData.caseHeroImg.fileData);
     }
+    
+    if(caseData.caseVideo.fileData) {
+      formData.append('video', caseData.caseVideo.fileData);
+    }
+    
     caseData.casePics.map(pic => {
       if(pic.fileData) {
         formData.append('casePics', pic.fileData)
@@ -87,8 +100,9 @@ export const updateCase = async caseData => {
         method: 'POST',
         body: formData
     });
+    
     let savedImgs = await response.json();
-
+    
     let count = 0;
     const casePics = caseData.casePics.map((item, index) => {
 
@@ -97,16 +111,16 @@ export const updateCase = async caseData => {
           const src = savedImgs.casePics[count]['secure_url'];
           const publicId = savedImgs.casePics[count]['public_id'];
           count++
-          return {id: item.id, src, publicId }
+          return {id: item.id, src, caption: item.caption, publicId }
       // If user hasn't choosen a new img resave the old one
       } else {
           return {
               id: item.id,
               src: item.src,
+              caption: item.caption,
               publicId: item.publicId
           }
       }
-
     });
 
     const dbObject = {
@@ -114,7 +128,12 @@ export const updateCase = async caseData => {
         title: caseData.title,
         caseHeroImg: {
           src: savedImgs.hero[0] ? savedImgs.hero[0]['secure_url'] : caseData.caseHeroImg.src,
-          publicId: savedImgs.hero[0] ? savedImgs.hero[0]['public_id'] : caseData.caseHeroImg.publicId,
+          caption: caseData.caseHeroImg.caption,
+          publicId: savedImgs.hero[0] ? savedImgs.hero[0]['public_id'] : caseData.caseHeroImg.publicId
+        },
+        caseVideo: {
+          src: savedImgs.video[0] ? savedImgs.video[0]['secure_url'] : caseData.caseVideo.src,
+          publicId: savedImgs.video[0] ? savedImgs.video[0]['public_id'] : caseData.caseVideo.publicId,
         },
         casePics,
         description: caseData.description,

@@ -16,13 +16,15 @@ class EditCase extends React.Component {
       currentCase: cases ? cases[props.match.params.title] : "",
       picCount: cases ? cases[props.match.params.title].casePics.length : "",
       message: '',
-      messageType: ''
+      messageType: '',
+      videoChanged: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleCaseImageCaption = this.handleCaseImageCaption.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,10 +66,27 @@ class EditCase extends React.Component {
     reader.onloadend = function(e) {
       if (name === 'hero-image') {
         this.updateHero(reader.result, file);
-      } else {
+      } else if (name === 'case-image') {
         this.updateCaseImgs(id, reader.result, file);
+      } else {
+        this.updateVideo(file);
       }
     }.bind(this);
+    
+  }
+  
+  updateVideo(fileData) {
+    console.log(fileData);
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        currentCase: {
+          ...prevState.currentCase,
+          caseVideo: {fileData}
+        },
+        videoChanged: true
+      }
+    });
   }
 
   updateHero(b64Url, fileData) {
@@ -99,6 +118,28 @@ class EditCase extends React.Component {
             ...prevState.currentCase,
             casePics: [...itemsBefore, { id, src: b64Url, fileData }, ...itemsAfter]
           }
+        }
+      });
+  }
+  
+  handleCaseImageCaption(e) {
+    const { casePics } = this.state.currentCase;
+    const id = parseInt(e.target.getAttribute('id'));
+  
+    const itemToModify = casePics.findIndex(pic => pic.id === id);
+    const itemsBefore = casePics.slice(0, itemToModify);
+    const itemsAfter = casePics.slice(itemToModify + 1) 
+    
+    console.log(casePics[itemToModify]);
+    
+    this.setState({
+        currentCase: {
+          ...this.state.currentCase,
+          casePics: [
+            ...itemsBefore,
+            { ...casePics[itemToModify], caption: e.target.value },
+            ...itemsAfter
+          ]
         }
       });
   }
@@ -162,9 +203,10 @@ class EditCase extends React.Component {
       ...this.state,
       currentCase: {
         ...this.state.currentCase,
+        caseHeroImg: {...this.state.currentCase.caseHeroImg, caption: name === 'hero-caption' ? e.target.value : this.state.currentCase.caseHeroImg.caption},
         title: name === 'title' ? e.target.value : this.state.currentCase.title,
         description: name === 'description' ? e.target.value : this.state.currentCase.description,
-        order: name === 'order' ? e.target.value : this.state.currentCase.order,
+        order: name === 'order' ? e.target.value : this.state.currentCase.order
       }
     });
   }
@@ -207,6 +249,8 @@ class EditCase extends React.Component {
               accept=".jpg"
               onChange={this.handleFileChange}
             />
+            <label htmlFor="hero-caption">Hero caption</label>
+            <input className="form-control" ref="heroCaption" type="text" name="hero-caption" id="hero-caption" value={currentCase.caseHeroImg && currentCase.caseHeroImg.caption} onChange={this.handleInputChange} required/>
             <img className="preview-hero" src={currentCase.caseHeroImg && currentCase.caseHeroImg.src} />
           </div>
 
@@ -238,6 +282,24 @@ class EditCase extends React.Component {
             />
           </div>
           
+          <div className="edit-case__hero-group form-group">
+            <label htmlFor="image">Video</label>
+            <input
+              className="form-control-file"
+              ref="video"
+              type="file"
+              name="video"
+              id="video"
+              accept=".mp4"
+              onChange={this.handleFileChange}
+            />
+            
+            {!this.state.videoChanged &&
+              <video width="320" height="240" controls>
+                <source src={currentCase.caseVideo && currentCase.caseVideo.src} type="video/mp4"/>
+              </video>}
+          </div>
+          
           <div className="form-group">
             <label htmlFor="order">Order</label>
             <input className="form-control" ref="order" type="number" name="order" id="order" value={this.state.currentCase.order} onChange={this.handleInputChange}/>
@@ -257,6 +319,8 @@ class EditCase extends React.Component {
                       name="case-image"
                       onChange={this.handleFileChange}
                     />
+                    <label htmlFor="case-image-caption">Case image caption</label>
+                    <input className="form-control" ref={`caseImageCaption${index + 1}`} type="text" name="case-image-caption" id={index + 1} value={casePics[index].caption} onChange={this.handleCaseImageCaption} required/>
                     {casePics[index].src ? (
                       <img src={casePics[index].src} className="preview-hero" />
                     ) : (

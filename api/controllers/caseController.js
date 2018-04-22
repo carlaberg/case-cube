@@ -3,13 +3,17 @@ const Case = mongoose.model("Case");
 const multer = require("multer");
 const removeUnusedImgs = require('../utils/removeUnusedImgs');
 const removeUnusedImgsCloudinary = require('../utils/removeUnusedImgsCloudinary');
-const promisifyImageUpload = require('../utils/promisifyImageUpload');
+const promisifyMediaUpload = require('../utils/promisifyMediaUpload');
 const cloudinary = require('cloudinary');
 
 const storage = multer.diskStorage({
   destination: './public/uploads',
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+    if(file.fieldname === 'video') {
+      cb(null, file.fieldname + "-" + Date.now() + ".mp4")
+    } else {
+      cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+    }
   }
 })
 
@@ -37,7 +41,7 @@ exports.uploadToMemory = (req, res, next) => {
   })
 }
 
-const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1}, {name: 'casePics', maxCount: 20}]);
+const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1}, {name: 'casePics', maxCount: 20}, {name: 'video', maxCount: 1}]);
 
 exports.upload = async (req, res, next) => {
   toDisk(req, res, async function (err) {
@@ -47,9 +51,9 @@ exports.upload = async (req, res, next) => {
 
     try {
 
-      const images = await promisifyImageUpload(req.files);
+      const media = await promisifyMediaUpload(req.files);
 
-      res.send(images);
+      res.send(media);
 
     } catch (err) {
       console.error(err.message);
@@ -69,7 +73,6 @@ exports.uploadSingle = async (req, res, next) => {
 
 exports.insertCase = async (req, res, next) => {
 
-  console.log(req.body);
   try{
     const newcase = new Case(req.body);
     await newcase.save();
@@ -98,8 +101,7 @@ exports.updateCase = async (req, res, next) => {
 };
 
 exports.deleteCase = async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.body.id);
+
   try {
     Case.remove({caseId: req.body.id}, (err, doc) => {
       if(err) {

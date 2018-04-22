@@ -20,6 +20,7 @@ class AddCase extends React.Component  {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
+    this.handleCaseImageCaption = this.handleCaseImageCaption.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
   }
 
@@ -66,6 +67,7 @@ class AddCase extends React.Component  {
   }
 
   updateHero(b64Url, fileData) {
+    
     this.setState({
       hero: {
         src: b64Url,
@@ -80,12 +82,31 @@ class AddCase extends React.Component  {
 
     const itemToModify = casePics.findIndex(pic => pic.id === id);
     const itemsBefore = casePics.slice(0, itemToModify);
-    const itemsAfter = casePics.slice(itemToModify + 1)
+    const itemsAfter = casePics.slice(itemToModify + 1) 
 
     this.setState({
         casePics: [
           ...itemsBefore,
-          { id, src: b64Url, fileData },
+          { id, src: b64Url, fileData, ...casePics[itemToModify] },
+          ...itemsAfter
+        ]
+      });
+  }
+  
+  handleCaseImageCaption(e) {
+    const { casePics } = this.state;
+    const id = parseInt(e.target.getAttribute('id'));
+  
+    const itemToModify = casePics.findIndex(pic => pic.id === id);
+    const itemsBefore = casePics.slice(0, itemToModify);
+    const itemsAfter = casePics.slice(itemToModify + 1) 
+    
+    console.log(casePics[itemToModify]);
+    
+    this.setState({
+        casePics: [
+          ...itemsBefore,
+          { ...casePics[itemToModify], caption: e.target.value },
           ...itemsAfter
         ]
       });
@@ -93,6 +114,7 @@ class AddCase extends React.Component  {
 
   handleSubmit(event) {
     const { hero, casePics } = this.state;
+
     event.preventDefault();
 
     const inputs = Array.from(this.caseForm.querySelectorAll('input'));
@@ -108,7 +130,8 @@ class AddCase extends React.Component  {
     } else {
       const caseData = {
         title: this.refs.title.value,
-        caseHeroImg: hero,
+        caseHeroImg: {...hero, caption: this.refs.heroCaption.value},
+        caseVideo: this.refs.video.files[0],
         casePics,
         description: this.refs.description.value,
         order: parseInt(this.refs.order.value)
@@ -124,6 +147,7 @@ class AddCase extends React.Component  {
   }
 
   render() {
+    console.log(this.state.casePics);
     const { casePics } = this.state;
     return (
       <div className="add-case">
@@ -137,6 +161,8 @@ class AddCase extends React.Component  {
           <div className="form-group">
             <label htmlFor="image">Huvudbild</label>
             <input className="form-control-file" ref="image" type="file" name="hero-image" id="image" accept=".jpg" onChange={this.handleFileChange} required/>
+            <label htmlFor="hero-caption">Hero caption</label>
+            <input className="form-control" ref="heroCaption" type="text" name="hero-caption" id="hero-caption" required/>
           </div>
           {this.state.hero.src && <img className="preview-hero" src={this.state.hero.src} />}
 
@@ -148,6 +174,11 @@ class AddCase extends React.Component  {
           <div className="form-group">
             <label htmlFor="description">Beskrivning</label>
             <textarea className="form-control" ref="description" type="text" name="description" id="description" required/>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="video">Video</label>
+            <input className="form-control-file" ref="video" type="file" name="video" id="video" accept=".mp4" onChange={e => console.log(e.target.files[0])}/>
           </div>
           
           <div className="form-group">
@@ -167,6 +198,8 @@ class AddCase extends React.Component  {
                   id={index + 1}
                   name="case-image"
                   onChange={this.handleFileChange} />
+                  <label htmlFor="case-image-caption">Case image caption</label>
+                  <input className="form-control" ref={`caseImageCaption${index + 1}`} type="text" name="case-image-caption" id={index + 1} onChange={this.handleCaseImageCaption} required/>
                   {casePics[index].src ? <img src={casePics[index].src} className="preview-hero" /> : ""}
               </div>
             )
