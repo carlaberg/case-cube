@@ -185,15 +185,17 @@ class EditCase extends React.Component {
             Tillbaka
           </button>
         </Link>
-
+        
         <form
-          ref="heroForm"
-          name="hero-form"
-          id="hero-form"
+          noValidate
+          ref="caseForm"
+          name="case-form"
+          id="case-form"
           method="POST"
-          onSubmit={this.handleSubmitHero}
+          onSubmit={this.handleSubmit}
           encType="multipart/form-data"
         >
+
           <div className="edit-case__hero-group form-group">
             <label htmlFor="image">Huvudbild</label>
             <input
@@ -207,20 +209,7 @@ class EditCase extends React.Component {
             />
             <img className="preview-hero" src={currentCase.caseHeroImg && currentCase.caseHeroImg.src} />
           </div>
-          <button className="btn btn-success" type="submit">
-            Save Hero
-          </button>
-        </form>
 
-        <form
-          noValidate
-          ref="caseForm"
-          name="case-form"
-          id="case-form"
-          method="POST"
-          onSubmit={this.handleSubmit}
-          encType="multipart/form-data"
-        >
           <div className="form-group">
             <label htmlFor="title">Projekttitel</label>
             <input

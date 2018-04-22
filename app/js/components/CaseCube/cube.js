@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import store from '../../../entry';
 require('./OrbitControls');
 
 const cube = (parentEl, history) => {
@@ -109,27 +110,38 @@ const cube = (parentEl, history) => {
     // calculate objects intersecting the picking ray
     var intersects = raycaster.intersectObject(cube);
 
+    const casesFromStore = store.getState().cases.cases;
+    
+    const cases = Object.keys(casesFromStore).map(item => {
+      return casesFromStore[item];
+    }).sort((a, b) => {return a.order - b.order});
+
     if (intersects.length > 0) {
       var index = Math.floor(intersects[0].faceIndex / 2);
       switch (index) {
         case 0:
+          history.push(`/cases/${cases[2].title}`);
           console.log('0');
           break;
         case 1:
+          history.push(`/cases/${cases[3].title}`);
           console.log('1');
           break;
         case 2:
+          history.push(`/cases/${cases[5].title}`);
           console.log('2');
           break;
         case 3:
+          history.push(`/cases/${cases[4].title}`);
           console.log('3');
           break;
         case 4:
           console.log('4');
           texts[0].position.z = 0;
-          history.push('/cases/1');
+          history.push(`/cases/${cases[0].title}`);
           break;
         case 5:
+          history.push(`/cases/${cases[1].title}`);
           console.log('5');
           break;
       }

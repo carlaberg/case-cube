@@ -1,4 +1,4 @@
-import {FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE, UPDATE_HERO} from '../utils/types'
+import {FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE} from '../utils/types'
 
 export const caseReducer = (state={}, action) => {
 
@@ -43,11 +43,8 @@ export const caseReducer = (state={}, action) => {
         msg: 'Case was successfully deleted!',
         msgType: 'success'
       }
-
-    case UPDATE_HERO:
-      const newState = { ...state, [action.payload.caseId]: action.payload }
-      return newState
+    
     default:
-      return state
+      return state;
   }
 }

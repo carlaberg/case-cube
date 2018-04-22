@@ -9,18 +9,18 @@ export default class ShowCaseData extends Component {
   }
   renderCaseItem () {
     const caseState = this.props.cases.cases
-    console.log(caseState);
+
     const cases = Object.keys(caseState).map(item => {
       return caseState[item]
-    });
+    }).sort((a, b) => { return a.order - b.order});
 
     return (
-      cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>).reverse()
+      cases.map(item => <AdminCaseItem  key={item._id} caseData={item}/>)
     )
   }
 
   render() {
-    console.log(this.props);
+    
     return (
       <div className="show-case-data">
 

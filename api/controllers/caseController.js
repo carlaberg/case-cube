@@ -17,13 +17,15 @@ exports.getCases = async (req, res) => {
 
   try {
     const cases = await Case.find();
-
+      
     res.json(cases);
+
   } catch(err) {
     console.error(err.message);
   }
 
 };
+
 const toMemory = multer({storage: multer.memoryStorage()}).single('casePics');
 
 exports.uploadToMemory = (req, res, next) => {
@@ -111,16 +113,3 @@ exports.deleteCase = async (req, res, next) => {
       console.log(err.message);
   }
 };
-
-exports.updateHero = async (req, res, next) => {
-    try {
-        Case.findOneAndUpdate({caseId: req.body.id}, {$set: {caseHeroImg: req.body.hero}}, {new: true}, (err, doc) => {
-            if(err) {
-                console.log('Could not update Hero', err);
-            }
-            res.json(doc)
-        })
-    } catch(err) {
-        console.log(err.message);
-    }
-}

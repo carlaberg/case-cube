@@ -133,31 +133,6 @@ export const updateCase = async caseData => {
     }).then(resp => resp.json());
 };
 
-export const updateHero = async (id, hero) => {
-
-    const formData = new FormData();
-    formData.append('hero', hero);
-
-    let response = await fetch('/api/upload-single', {
-        method: 'POST',
-        body: formData
-    });
-    let imgData = await response.json();
-
-    const dbObject = { id, hero: `/uploads/${imgData[0].filename}` };
-
-    const headers = new Headers({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Methods': 'PUT',
-    });
-
-    return fetch('/api/update-hero', {
-        method: 'PUT',
-        body: JSON.stringify(dbObject),
-        headers: headers
-    }).then(resp => resp.json());
-};
-
 export const deleteCase = id => {
 
   const headers = new Headers({
