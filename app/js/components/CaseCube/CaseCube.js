@@ -8,7 +8,6 @@ class CaseCube extends Component {
   }
 
   render() {
-    console.log(this.props);
     return <div ref={caseCube => this.caseCube = caseCube} className="case-cube">Case Cube</div>
   }
 }

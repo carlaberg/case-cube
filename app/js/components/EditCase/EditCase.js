@@ -4,7 +4,9 @@ import * as api from '../../apiFetchFunctions';
 import { updateHero, updateCase, deleteCase } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { findItemToUpdate } from "../../utils/helpers";
 import './EditCase.scss';
+import CaseInfo from '../CaseInfo/CaseInfo';
 
 class EditCase extends React.Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class EditCase extends React.Component {
     this.state = {
       currentCase: cases ? cases[props.match.params.title] : "",
       picCount: cases ? cases[props.match.params.title].casePics.length : "",
+      infoCount: cases ? cases[props.match.params.title].caseInfo.length : "",
       message: '',
       messageType: '',
       videoChanged: false
@@ -33,11 +36,14 @@ class EditCase extends React.Component {
     this.setState({
       currentCase,
       picCount: currentCase.casePics.length,
+      infoCount: currentCase.caseInfo.length,
       message: nextProps.cases.msg,
       messageType: nextProps.cases.msgType,
     })
   }
 
+
+// For case images
   addFilePicker(event) {
     this.setState(prevState => {
       const picNumber = prevState.picCount > 0 ? prevState.picCount + 1 : 1;
@@ -47,6 +53,20 @@ class EditCase extends React.Component {
           casePics: [...prevState.currentCase.casePics, { id: picNumber }]
         },
         picCount: picNumber
+      };
+    });
+  }
+  
+// For case info
+  addCaseInfo() {
+    this.setState(prevState => {
+      const infoNumber = prevState.infoCount > 0 ? prevState.infoCount + 1 : 1;
+      return {
+        currentCase: {
+          ...prevState.currentCase,
+          caseInfo: [...prevState.currentCase.caseInfo, { id: infoNumber }]
+        },
+        infoCount: infoNumber
       };
     });
   }
@@ -76,7 +96,6 @@ class EditCase extends React.Component {
   }
   
   updateVideo(fileData) {
-    console.log(fileData);
     this.setState(prevState => {
       return {
         ...prevState,
@@ -130,8 +149,6 @@ class EditCase extends React.Component {
     const itemsBefore = casePics.slice(0, itemToModify);
     const itemsAfter = casePics.slice(itemToModify + 1) 
     
-    console.log(casePics[itemToModify]);
-    
     this.setState({
         currentCase: {
           ...this.state.currentCase,
@@ -143,9 +160,26 @@ class EditCase extends React.Component {
         }
       });
   }
+  
+  handleInfoChange(e) {
+    const { currentCase, currentCase: { caseInfo }} = this.state;
+    const items = findItemToUpdate(parseInt(e.target.getAttribute("id")), caseInfo);
+    
+    const key = e.target.name.split('-').pop();
+    
+    this.setState({
+      currentCase: {
+        ...currentCase,
+        caseInfo: [
+          ...items.itemsBefore,
+          { ...caseInfo[items.itemToModify], [key]: e.target.value },
+          ...items.itemsAfter
+        ]
+      }
+    });  
+  }
 
   deleteImg(e, id) {
-    console.log(id);
     const { currentCase, currentCase: { casePics } } = this.state;
 
     const itemToModify = casePics.findIndex(pic => pic.id === id);
@@ -212,11 +246,10 @@ class EditCase extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (!this.props.cases.cases) {
       return '';
     }
-    const { currentCase, currentCase: { casePics } } = this.state
+    const { currentCase, currentCase: { casePics, caseInfo } } = this.state
     const caseItem = this.props.cases.cases[this.props.match.params.title];
 
     return (
@@ -304,6 +337,15 @@ class EditCase extends React.Component {
             <label htmlFor="order">Order</label>
             <input className="form-control" ref="order" type="number" name="order" id="order" value={this.state.currentCase.order} onChange={this.handleInputChange}/>
           </div>
+          
+          <h4>Case info</h4>
+
+          {caseInfo.length > 0 ? caseInfo.map((item, index) => {
+            return <CaseInfo key={index} index={index} changeHandler={e => this.handleInfoChange(e)} caseInfoData={ item }/> }) : ""}
+            
+          <div className="form-group">
+            <button type="button" className="btn btn-danger" onClick={() => this.addCaseInfo()}>Lägg till</button>
+          </div> 
 
           <h4>Showcasebilder</h4>
 

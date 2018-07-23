@@ -36,7 +36,6 @@ export const updateCase = values => {
   return async dispatch => {
     const updatedCase = await api.updateCase(values);
     try {
-      console.log(updatedCase);
       return dispatch({
         type: UPDATE_CASE,
         payload: updatedCase

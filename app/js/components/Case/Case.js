@@ -14,7 +14,7 @@ class Case extends React.Component {
     const { match, featuredCases, match: { params: { title } }} = this.props;
     const single = featuredCases[title];
     const { caseHeroImg: { src }, title: caseTitle, description, caseVideo: { src: videoSrc } } = single;
-    console.log(single);
+
     return (
       <div className="case">
         <CaseHero heroUrl={ src } title={ caseTitle }/>

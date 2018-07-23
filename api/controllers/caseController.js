@@ -47,16 +47,15 @@ const toDisk = multer({ storage: storage }).fields([{name: 'hero', maxCount: 1},
 exports.upload = async (req, res, next) => {
   toDisk(req, res, async function (err) {
     if (err) {
-      console.log('err 1', err.message);
+      console.log(err.message);
     }
   
     try {
-      console.log('files', req.files);
       const media = await promisifyMediaUpload(req.files);
       res.send(media);
   
     } catch (err) {
-      console.error('err2', err.message);
+      console.error(err.message);
     }
   })
 }

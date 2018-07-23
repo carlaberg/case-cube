@@ -37,8 +37,6 @@ export const addCase = async caseData => {
     formData.append('video', caseData.caseVideo);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
 
-    for(const item of formData.entries()) console.log(item);
-
     let response = await fetch('/api/profile', {
         method: 'POST',
         body: formData
@@ -141,6 +139,7 @@ export const updateCase = async caseData => {
           publicId: savedImgs.video[0] ? savedImgs.video[0]['public_id'] : caseData.caseVideo.publicId,
         },
         casePics,
+        caseInfo: caseData.caseInfo,
         description: caseData.description,
         order: caseData.order
     };

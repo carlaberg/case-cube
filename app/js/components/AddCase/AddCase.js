@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./AddCase.scss";
-import { findItemToUpdate } from "../../utils/helpers"
+import { findItemToUpdate } from "../../utils/helpers";
 import * as api from "../../apiFetchFunctions";
 import { addCase } from '../../actions';
 import { connect } from 'react-redux';
