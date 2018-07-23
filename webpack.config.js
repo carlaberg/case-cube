@@ -12,7 +12,7 @@ module.exports = {
     contentBase: "./public",
     historyApiFallback: true,
     proxy: {
-      "**": "http://localhost:9090",
+      "**": "http://localhost:9090"
     }
   },
   devtool: 'source-map',
@@ -29,7 +29,7 @@ module.exports = {
         exclude: /node_modules(?!\/webpack-dev-server)/
       },
       {
-        test: /\.scss$/,
+        test:/\.(s*)css$/,
         use: [
           'style-loader',
           'css-loader',
@@ -37,8 +37,8 @@ module.exports = {
         ]
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: 'file-loader?name=uploads/[name].[ext]&outputPath=../'
+        test: /\.(jpe?g|png|gif|svg)$/,
+        use: 'file-loader'
       }
 
     ]

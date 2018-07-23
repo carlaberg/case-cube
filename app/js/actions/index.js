@@ -1,6 +1,8 @@
 import { FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types';
 import * as api from "../apiFetchFunctions";
 
+// Async admin actions
+
 export const fetchCases = () => {
   return async dispatch => {
     const cases = await api.getCases('/api/get-cases');

@@ -31,15 +31,20 @@ export const uploadCasePics = async caseData => {
 };
 
 export const addCase = async caseData => {
-  
+    
     const formData = new FormData();
     formData.append('hero', caseData.caseHeroImg.fileData);
     formData.append('video', caseData.caseVideo);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
 
+    for(const item of formData.entries()) console.log(item);
+
     let response = await fetch('/api/profile', {
         method: 'POST',
         body: formData
+    })
+    .catch(err => {
+      console.error(err.message);
     });
 
     const savedImgs = await response.json();
@@ -64,11 +69,11 @@ export const addCase = async caseData => {
           src: savedImgs.video[0]['secure_url'],
           publicId: savedImgs.video[0]['public_id']
         },
+        caseInfo: caseData.caseInfo,
         casePics,
         description: caseData.description,
         order: caseData.order
     };
-
 
     const headers = new Headers({ 'Content-Type': 'application/json' });
 

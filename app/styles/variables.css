@@ -1,0 +1,42 @@
+/* site base layout */
+:root {
+    --left-col: auto;
+    --right-col: calc(17.5% - 20px);
+    --right-col-desktop-large: calc(22.5% - 20px); 
+}
+
+/* colors */
+:root {
+    --black: black;
+    --white: white;
+    --site-bg: white;
+    --light-grey: #dadada8a;
+}
+
+/* typography */
+
+:root {
+    --billboard: 6vw;
+    --large: 29px;
+    --medium: 24px;
+    --small: 20px;
+    --xsmall: 14px;
+}
+
+/* guttersizes */
+
+:root {
+    --gutter-20: 20px;
+    --gutter-40: 40px;
+    --gutter-50: 50px;
+}
+
+/* easings */
+:root {
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* transitions */
+:root {
+    --expo-out-medium: 0.7s var(--ease-out-expo);
+}

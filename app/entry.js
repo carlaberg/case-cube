@@ -10,6 +10,8 @@ import caseCube from "./js/reducers";
 import App from "./js/components/App/App";
 import "./styles/bootstrap/bootstrap.scss"
 import "./styles/main.scss";
+import "./styles/variables.css";
+import "./styles/fonts.css";
 
 let store = createStore(caseCube, composeWithDevTools(applyMiddleware(thunk)));
 

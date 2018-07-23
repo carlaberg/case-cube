@@ -1,10 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./AddCase.scss";
+import { findItemToUpdate } from "../../utils/helpers"
 import * as api from "../../apiFetchFunctions";
 import { addCase } from '../../actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import CaseInfo from '../CaseInfo';
 
 class AddCase extends React.Component  {
   constructor(props) {
@@ -12,7 +15,9 @@ class AddCase extends React.Component  {
 
     this.state = {
       picCount: 0,
+      infoCount: 0,
       casePics: [],
+      caseInfo: [],
       hero: {},
       message: '',
       messageType: ''
@@ -22,6 +27,8 @@ class AddCase extends React.Component  {
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleCaseImageCaption = this.handleCaseImageCaption.bind(this);
     this.addFilePicker = this.addFilePicker.bind(this);
+    this.addCaseInfo = this.addCaseInfo.bind(this);
+    this.handleInfoChange = this.handleInfoChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,6 +50,35 @@ class AddCase extends React.Component  {
       }
     });
 
+  }
+  
+  addCaseInfo(event) {
+
+    this.setState( prevState => {
+      const caseInfoNumber = prevState.infoCount > 0 ? prevState.infoCount + 1 : 1;
+      return {
+        caseInfo: [
+          ...prevState.caseInfo, {id: caseInfoNumber}
+        ],
+        infoCount: caseInfoNumber
+      }
+    });
+
+  }
+  
+  handleInfoChange(e) {
+    const { caseInfo } = this.state;
+    const items = findItemToUpdate(parseInt(e.target.getAttribute("id")), caseInfo);
+    
+    const key = e.target.name.split('-').pop();
+    
+    this.setState({
+        caseInfo: [
+          ...items.itemsBefore,
+          { ...caseInfo[items.itemToModify], [key]: e.target.value },
+          ...items.itemsAfter
+        ]
+      });
   }
 
   handleFileChange(event){
@@ -77,43 +113,26 @@ class AddCase extends React.Component  {
   }
 
   updateCaseImgs(id, b64Url, fileData) {
-
     const { casePics } = this.state;
-
-    const itemToModify = casePics.findIndex(pic => pic.id === id);
-    const itemsBefore = casePics.slice(0, itemToModify);
-    const itemsAfter = casePics.slice(itemToModify + 1) 
-
-    this.setState({
-        casePics: [
-          ...itemsBefore,
-          { id, src: b64Url, fileData, ...casePics[itemToModify] },
-          ...itemsAfter
-        ]
-      });
+    const items = findItemToUpdate(id, casePics);
+    this.setState({casePics: [...items.itemsBefore, { id, src: b64Url, fileData }, ...items.itemsAfter]});
   }
   
   handleCaseImageCaption(e) {
     const { casePics } = this.state;
-    const id = parseInt(e.target.getAttribute('id'));
-  
-    const itemToModify = casePics.findIndex(pic => pic.id === id);
-    const itemsBefore = casePics.slice(0, itemToModify);
-    const itemsAfter = casePics.slice(itemToModify + 1) 
-    
-    console.log(casePics[itemToModify]);
+    const items = findItemToUpdate(parseInt(e.target.getAttribute("id")), casePics);
     
     this.setState({
         casePics: [
-          ...itemsBefore,
-          { ...casePics[itemToModify], caption: e.target.value },
-          ...itemsAfter
+          ...items.itemsBefore,
+          { ...casePics[items.itemToModify], caption: e.target.value },
+          ...items.itemsAfter
         ]
       });
   }
 
   handleSubmit(event) {
-    const { hero, casePics } = this.state;
+    const { hero, casePics, caseInfo } = this.state;
 
     event.preventDefault();
 
@@ -132,6 +151,7 @@ class AddCase extends React.Component  {
         title: this.refs.title.value,
         caseHeroImg: {...hero, caption: this.refs.heroCaption.value},
         caseVideo: this.refs.video.files[0],
+        caseInfo,
         casePics,
         description: this.refs.description.value,
         order: parseInt(this.refs.order.value)
@@ -147,8 +167,7 @@ class AddCase extends React.Component  {
   }
 
   render() {
-    console.log(this.state.casePics);
-    const { casePics } = this.state;
+    const { casePics, caseInfo } = this.state;
     return (
       <div className="add-case">
 
@@ -173,18 +192,27 @@ class AddCase extends React.Component  {
 
           <div className="form-group">
             <label htmlFor="description">Beskrivning</label>
-            <textarea className="form-control" ref="description" type="text" name="description" id="description" required/>
+            <textarea className="form-control" ref="description" type="text" name="description" id="description" required />
           </div>
           
           <div className="form-group">
             <label htmlFor="video">Video</label>
-            <input className="form-control-file" ref="video" type="file" name="video" id="video" accept=".mp4" onChange={e => console.log(e.target.files[0])}/>
+            <input className="form-control-file" ref="video" type="file" name="video" id="video" />
           </div>
           
           <div className="form-group">
             <label htmlFor="order">Order</label>
             <input className="form-control" ref="order" type="number" name="order" id="order"/>
           </div>
+
+          <h4>Case info</h4>
+
+          {caseInfo.length > 0 ? caseInfo.map((item, index) => {
+            return <CaseInfo key={index} index={index} changeHandler={this.handleInfoChange}/>}) : ""}
+            
+          <div className="form-group">
+            <button type="button" className="btn btn-danger" onClick={this.addCaseInfo}>Lägg till</button>
+          </div>  
 
           <h4>Showcasebilder</h4>
 

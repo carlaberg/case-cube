@@ -1,16 +1,19 @@
-import {FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE} from '../utils/types'
+import { FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types'
 
 export const caseReducer = (state={}, action) => {
 
   switch(action.type) {
 
     case FETCH_CASES:
-      const caseObject = {cases:{}}
-      action.payload.map(item => {
+      const caseObject = {cases:{}, featuredCases: {}};
+      const cases = action.payload.map(item => {
+        if(item.order < 7) {
+            Object.assign(caseObject.featuredCases, {[item.title]: item})
+        }
         Object.assign(caseObject.cases, {[item.caseId]: item})
       })
-
-      return caseObject
+      
+      return caseObject;
 
     case ADD_CASE:
     return {
