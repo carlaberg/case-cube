@@ -16,6 +16,10 @@ export const getCases = () => {
     return fetch('/api/get-cases').then(response => response.json());
 };
 
+export const getFeaturedCases = (url = '/api/get-featured-cases') => {
+    return fetch( url ).then(response => response.json());
+};
+
 export const uploadCasePics = async caseData => {
     const formData = new FormData();
     formData.append('casePics', caseData.caseHeroImg);

@@ -11,6 +11,8 @@ const router = express.Router();
 
 router.get("/api/get-cases", caseController.getCases);
 
+router.get("/api/get-featured-cases", caseController.getFeaturedCases);
+
 // Post
 
 router.post("/api/profile", caseController.upload);

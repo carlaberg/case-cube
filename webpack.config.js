@@ -13,7 +13,8 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "**": "http://localhost:9090"
-    }
+    },
+    host: '0.0.0.0'
   },
   devtool: 'source-map',
   module: {

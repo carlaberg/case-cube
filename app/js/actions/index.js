@@ -1,14 +1,27 @@
-import { FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types';
+import { FETCH_CASES, FETCH_FEATURED_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types';
 import * as api from "../apiFetchFunctions";
-
-// Async admin actions
 
 export const fetchCases = () => {
   return async dispatch => {
-    const cases = await api.getCases('/api/get-cases');
+    const cases = await api.getCases();
     try {
       return dispatch({
         type: FETCH_CASES,
+        payload: cases
+      });
+    } catch (err) {
+        console.log(err);
+    }
+  }
+}
+
+export const fetchFeaturedCases = (query = '') => {
+  return async dispatch => {
+    const cases = await api.getFeaturedCases(`/api/get-featured-cases/${ query }`);
+    
+    try {
+      return dispatch({
+        type: FETCH_FEATURED_CASES,
         payload: cases
       });
     } catch (err) {

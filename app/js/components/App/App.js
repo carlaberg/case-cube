@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchCases } from '../../actions';
-import Admin from "../Admin";
-import ShowCaseData from "../ShowCaseData/ShowCaseData";
-import EditCase from "../EditCase/EditCase";
-import Home from '../Home';
-import Case from '../Case';
+import Admin from "../admin-components/Admin";
+import ShowCaseData from "../admin-components/ShowCaseData/ShowCaseData";
+import EditCase from "../admin-components/EditCase/EditCase";
+import Home from '../public-components/Home';
+import Case from '../public-components/Case';
 import * as api from "../../apiFetchFunctions";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { SiteContainer } from './styles';
@@ -20,10 +20,12 @@ class App extends React.Component {
     return (
       <Router>
         <SiteContainer>
+          <Link to="/">Hem</Link>
+          <Link to="/admin/cases">Admin</Link>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/cases/:title" render={props => <Case cases={this.props.cases} {...props} />} />
-            <Route exact path="/admin/cases" render={props => <Admin cases={this.props.cases} {...props} />} />
+            <Route exact path="/cases/:title" render={props => <Case {...props} />} />
+            <Route exact path="/admin/cases" render={props => <Admin {...props} />} />
             <Route path="/admin/cases/edit/:title" render={props => <EditCase {...props} />} />
           </Switch>
         </SiteContainer>

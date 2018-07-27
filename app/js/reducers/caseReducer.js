@@ -1,30 +1,40 @@
-import { FETCH_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types'
+import { FETCH_CASES, FETCH_FEATURED_CASES, ADD_CASE, UPDATE_CASE, DELETE_CASE } from '../utils/types'
 
 export const caseReducer = (state={}, action) => {
 
   switch(action.type) {
 
     case FETCH_CASES:
-      const caseObject = {cases:{}, featuredCases: {}};
-      const cases = action.payload.map(item => {
-        if(item.order < 7) {
-            Object.assign(caseObject.featuredCases, {[item.title]: item})
-        }
-        Object.assign(caseObject.cases, {[item.caseId]: item})
-      })
-      
-      return caseObject;
+    console.log(action.payload);
+        const cases = {};
+        action.payload.forEach(item => {
+          Object.assign(cases, {[item.caseId]: item})
+        })
+      return {
+        ...state,
+        cases
+      };
+
+    case FETCH_FEATURED_CASES:
+      console.log(action.payload);
+      return {
+        ...state,
+        cases: {
+          ...state.cases
+        },
+        featuredCases: action.payload
+      } 
 
     case ADD_CASE:
-    return {
-      ...state,
-      cases: {
-        ...state.cases,
-        [action.payload.caseId]: action.payload
-      },
-      msg: 'Case was successfully saved to the database!',
-      msgType: 'success'
-    }
+      return {
+        ...state,
+        cases: {
+          ...state.cases,
+          [action.payload.caseId]: action.payload
+        },
+        msg: 'Case was successfully saved to the database!',
+        msgType: 'success'
+      }
 
     case UPDATE_CASE:
       return {

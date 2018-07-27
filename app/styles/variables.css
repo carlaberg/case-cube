@@ -2,7 +2,20 @@
 :root {
     --left-col: auto;
     --right-col: calc(17.5% - 20px);
-    --right-col-desktop-large: calc(22.5% - 20px); 
+    --right-col-desktop-large: calc(22.5% - 20px);
+    --content-width: calc(100vw - 40px);
+      
+    @media (min-width: 768px) {
+        --content-width: calc(80vw - 37px);
+    }
+    
+    @media (min-width: 1200px) {
+        --content-width: calc(55vw - 37px);
+    }
+    
+    @media (min-width: 1920px) {
+        --content-width: calc(45vw - 37px);
+    }
 }
 
 /* colors */
@@ -29,6 +42,7 @@
     --gutter-20: 20px;
     --gutter-40: 40px;
     --gutter-50: 50px;
+    --gutter-80: 80px;
 }
 
 /* easings */

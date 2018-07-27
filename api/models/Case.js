@@ -3,6 +3,10 @@ const autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
 const caseSchema = new mongoose.Schema({
+  created: {
+    type: Date,
+    default: Date.now
+  },
   title: {
     type: String,
     trim: true,

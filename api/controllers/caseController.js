@@ -18,10 +18,29 @@ const storage = multer.diskStorage({
 })
 
 exports.getCases = async (req, res) => {
-
+  
   try {
     const cases = await Case.find();
       
+    res.json(cases);
+
+  } catch(err) {
+    console.error(err.message);
+  }
+
+};
+
+exports.getFeaturedCases = async (req, res) => {
+  const sortItem = req.query.sortBy || 'created';
+  const limit = parseInt(req.query.limit) || 100;
+  
+  try {
+    const cases = await Case.find()
+      .sort({ [ sortItem ]: 'asc'})
+      .limit(limit)
+      .exec();
+      
+    console.log(cases);  
     res.json(cases);
 
   } catch(err) {
