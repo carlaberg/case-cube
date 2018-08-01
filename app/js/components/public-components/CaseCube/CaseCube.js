@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { CanvasWrapper } from './styles';
 import cube from './cube';
 
 class CaseCube extends Component {
@@ -8,7 +9,9 @@ class CaseCube extends Component {
   }
 
   render() {
-    return <div ref={caseCube => this.caseCube = caseCube} className="case-cube">Case Cube</div>
+    return (
+        <CanvasWrapper innerRef={caseCube => this.caseCube = caseCube} className="case-cube"></CanvasWrapper>
+    )
   }
 }
 

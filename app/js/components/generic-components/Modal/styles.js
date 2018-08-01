@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { animated } from 'react-spring';
 
-export const ModalWrapper = styled.div`
+export const ModalWrapper = styled(animated.div)`
   position: fixed;
   top: 0;
   left: 0;
@@ -16,12 +17,11 @@ export const Overlay= styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.8);
 `
 
-export const ModalContent = styled.div`
+export const ModalContent = styled(animated.div)`
   position: relative;
-  background: var(--white);
   max-width: 60vw;
   max-height: 80vh; 
   overflow: hidden;

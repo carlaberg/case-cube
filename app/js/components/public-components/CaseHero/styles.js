@@ -4,9 +4,11 @@ import { tabletPortrait, desktop, desktopLarge } from '../../../../styles/breakp
 export const Hero = styled.div`
   width: 100%;
   padding: var(--gutter-20);
+  padding-top: 0;
   
   @media (min-width: ${ tabletPortrait }) {
     padding: var(--gutter-40);
+    padding-top: 0;
   }
   
   .hero__inner {

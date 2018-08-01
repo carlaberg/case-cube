@@ -11,7 +11,7 @@ export const SectionTag = styled.section`
   
   @media (min-width: ${ tabletPortrait }) {
     min-height: ${ props => props.height };
-    padding: var(--gutter-40);
+    padding: ${props => props.padding || 'var(--gutter-40)'};
     padding-bottom: var(--gutter-80);
   }
 `
@@ -58,22 +58,12 @@ export const SectionHeader = styled.div`
 export const SectionInner = styled.div`
   display: flex;
   
-  &:before, &:after {
+  &:after {
     display: none;
     
     @media (min-width: ${tabletPortrait}) {
       display: block;
     }
-  }
-  
-  &:before {
-    margin-right: 40px;
-    content: '26/3-2018';
-    height: auto;
-    flex: auto;
-    border-top: 1px solid ${ props => props.theme.hrColor };
-    font-family: 'maaxregular';
-    font-size: var(--xsmall);
   }
   
   &:after {
@@ -90,6 +80,19 @@ export const SectionInner = styled.div`
     @media (min-width: ${ desktopLarge }) {
       flex-basis: var(--right-col-desktop-large);
     }
+  }
+`
+export const SectionLeft = styled.div`
+  display: none;
+  margin-right: 40px;
+  height: auto;
+  flex: auto;
+  border-top: 1px solid ${ props => props.theme.hrColor };
+  font-family: 'maaxregular';
+  font-size: var(--xsmall);
+  
+  @media (min-width: ${tabletPortrait}) {
+    display: block;
   }
 `
 

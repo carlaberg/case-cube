@@ -2,6 +2,14 @@ import * as THREE from 'three';
 import store from '../../../../entry';
 require('./OrbitControls');
 
+const colors = {
+  bg: 0xffffff,
+  plane: 0xffffff,
+  cube: 0xffffff,
+  text: 0xffffff,
+  onHover: 0xff00ff
+}
+
 const cube = (parentEl, history) => {
 
   // ----> GLOBAL VARIABLES <----
@@ -15,20 +23,26 @@ const cube = (parentEl, history) => {
     { id: 6, faceIndexes: [4, 5] }
   ];
   var texts = [];
-  var cubeGroup = new THREE.Group();
 
+  // ----> ADD SCENE <----
   var scene = new THREE.Scene();
+  
+  // ----> ADD CAMERA <----
   var camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
-
-  camera.position.set(-1, 1, 3);
+  
+  camera.position.set(-1, 1, 1.5);
+  
+  // ----> ADD CUBE GROUP <----
+  var cubeGroup = new THREE.Group();
+  cubeGroup.rotation.set(0.1,0.15,0.1);
 
   // ----> ADD DIRECTIONAL LIGHT 1 <----
-  var directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  var directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
   directionalLight.castShadow = true;
   directionalLight.position.set(-1.7, 2, 2);
   scene.add(directionalLight);
@@ -46,7 +60,7 @@ const cube = (parentEl, history) => {
   // scene.add(directionalLightHelper);
 
   // ----> ADD SPOTLIGHT <----
-  var spotLight = new THREE.SpotLight(0xffffff, 0.5);
+  var spotLight = new THREE.SpotLight(0xffffff, 0.05);
   spotLight.position.set(-1, 1, 3);
   spotLight.angle = 0.7;
   spotLight.distance = 5;
@@ -59,17 +73,24 @@ const cube = (parentEl, history) => {
 
   //<---- ADD AMBIENT LIGHT <----
 
-  var light = new THREE.AmbientLight(0x737d75); // soft white light
+  var light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
   scene.add(light);
 
   //<---- ADD RENDERER <----
 
   var renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0xd9e3db);
+  renderer.setClearColor(colors.bg);
+  console.log(parentEl);
   parentEl.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
   renderer.shadowMapType = THREE.PCFSoftShadowMap;
+  
+  window.addEventListener('resize', function () {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
 
   //<---- ADD ORBIT CONTROLS ---->
 
@@ -80,7 +101,7 @@ const cube = (parentEl, history) => {
   var geometry = new THREE.BoxGeometry(1, 1, 1);
 
   var material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
+    color: colors.cube,
     vertexColors: THREE.FaceColors
   });
   material.vertexColors = THREE.FaceColors;
@@ -88,7 +109,6 @@ const cube = (parentEl, history) => {
   cube.receiveShadow = true;
   cube.castShadow = true;
   cube.geometry.computeBoundingBox();
-  console.log(cube);
   cubeGroup.add(cube);
 
   // ----> ADD RAY CASTER <----
@@ -121,32 +141,26 @@ const cube = (parentEl, history) => {
       switch (index) {
         case 0:
           history.push(`/cases/${cases[2].title}`);
-          console.log('0');
           break;
         case 1:
           history.push(`/cases/${cases[3].title}`);
-          console.log('1');
           break;
         case 2:
           history.push(`/cases/${cases[5].title}`);
-          console.log('2');
           break;
         case 3:
           history.push(`/cases/${cases[4].title}`);
-          console.log('3');
           break;
         case 4:
-          console.log('4');
           texts[0].position.z = 0;
           history.push(`/cases/${cases[0].title}`);
           break;
         case 5:
           history.push(`/cases/${cases[1].title}`);
-          console.log('5');
           break;
       }
     } else {
-      cube.geometry.faces[intersects[0].faceIndex].color.set(0x000000);
+      cube.geometry.faces[intersects[0].faceIndex].color.set(colors.onHover);
       geometry.colorsNeedUpdate = true;
     }
   }
@@ -171,11 +185,11 @@ const cube = (parentEl, history) => {
           text.material.color.setHex(0xff00ff);
           text.material.needsUpdate = true;
         } else {
-          text.material.color.setHex(0xffffff);
+          text.material.color.setHex(colors.text);
           text.material.needsUpdate = true;
         }
       } else {
-        text.material.color.setHex(0xffffff);
+        text.material.color.setHex(colors.text);
         text.material.needsUpdate = true;
       }
     });
@@ -203,7 +217,7 @@ const cube = (parentEl, history) => {
         height: 0.05
       });
 
-      var textMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+      var textMaterial = new THREE.MeshLambertMaterial({ color: colors.text });
 
       var textMesh = new THREE.Mesh(textGeo, textMaterial);
 
@@ -259,7 +273,7 @@ const cube = (parentEl, history) => {
   // <---- ADD PLANE ---->
   var planeGeometry = new THREE.PlaneGeometry(100, 100);
   var planeMaterial = new THREE.MeshLambertMaterial({
-    color: 0xffffff,
+    color: colors.plane,
     side: THREE.DoubleSide
   });
   var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);

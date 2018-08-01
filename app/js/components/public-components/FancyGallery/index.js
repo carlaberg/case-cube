@@ -34,13 +34,11 @@ class FancyGallery extends Component {
             return (
               <Fragment>
                 { this.renderItems(toggle) }
-                {on && 
-                  <Modal toggle={toggle}>
+                  <Modal toggle={ toggle } on={ on }>
                     {() => (
                       <FeaturedImage src={ featuredImage } />
                     )}
                   </Modal>
-                }
               </Fragment>
             )
           }}

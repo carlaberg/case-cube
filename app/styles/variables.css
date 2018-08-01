@@ -4,9 +4,11 @@
     --right-col: calc(17.5% - 20px);
     --right-col-desktop-large: calc(22.5% - 20px);
     --content-width: calc(100vw - 40px);
+    --horizontal-padding: 20px;
       
     @media (min-width: 768px) {
         --content-width: calc(80vw - 37px);
+        --horizontal-padding: 40px;
     }
     
     @media (min-width: 1200px) {
@@ -23,7 +25,9 @@
     --black: black;
     --white: white;
     --site-bg: white;
-    --light-grey: #dadada8a;
+    
+    --light-grey: #aeaeae;
+    --ultra-light-grey: #dadada8a;
 }
 
 /* typography */
@@ -34,6 +38,7 @@
     --medium: 24px;
     --small: 20px;
     --xsmall: 14px;
+    --xxsmall: 10px;
 }
 
 /* guttersizes */

@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { fetchFeaturedCases } from '../../../actions';
 import './Case.scss';
-import { CaseNavigation } from './styles';
+import { formatDate } from '../../../utils/helpers';
+import { CaseNavigation, CaseWrapper } from './styles';
 import Section from '../base-layout/Section';
 import CaseHero from '../CaseHero';
 import CaseImage from '../CaseImage';
@@ -40,33 +41,43 @@ class Case extends React.Component {
   
   render() {
     if(!this.props.featuredCases) return 'Loading';
-    const { match: { params: { title } }, featuredCases } = this.props;
+    const { match: { params: { title } }, featuredCases, style } = this.props;
     const single = featuredCases.filter(item => item.title === title);
-    const { caseHeroImg: { src }, title: caseTitle, description, caseVideo: { src: videoSrc }, caseInfo, casePics } = single[0];
+    const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo: { src: videoSrc }, caseInfo, casePics } = single[0];
     
     return (
-      <div className="case">
+      <CaseWrapper style={{ ...style }}>
         <CaseHero heroUrl={ src } title={ caseTitle }/>
-        <Section id="01">
+        <Section id="01" created={ formatDate( created ) }>
           <CaseImage 
             url={ src }
             text={{ title, description }}
           />
         </Section>
-        <Section id="01">
+        <Section id="01" created={ formatDate( created ) }>
           <Video src={ videoSrc } />
         </Section>
-        <Section id="01" theme="dark" title="Project info" height={ "50vh" }>
+        <Section id="01" 
+          theme="dark" 
+          title="Project info" 
+          height={ "50vh" }
+          created={ formatDate( created ) }
+          >
           <InfoList caseInfo={ caseInfo } />
         </Section>
-        <Section id="01">
+        <Section id="01" created={ formatDate( created ) }>
           <FancyGallery images={ casePics } />
         </Section>
-        <CaseNavigation>
-          <Link to={`/cases/${ this.getCase('prev').title }`}><Button text="Previous" /></Link>
-          <Link to={`/cases/${ this.getCase('next').title }`}><Button text="next" /></Link>
-        </CaseNavigation>
-      </div>
+        <Section 
+          theme='bare' 
+          padding='0px 40px'
+        >
+          <CaseNavigation>
+            <Link to={`/cases/${ this.getCase('prev').title }`}><Button text="Previous" /></Link>
+            <Link to={`/cases/${ this.getCase('next').title }`}><Button text="next" /></Link>
+          </CaseNavigation>
+        </Section>
+      </CaseWrapper>
     );
   }
 }

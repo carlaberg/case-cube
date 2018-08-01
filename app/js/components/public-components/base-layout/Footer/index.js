@@ -1,15 +1,15 @@
 import React from 'react';
-import { Footer, FooterContent } from './styles';
-import Button from '../base-layout/Footer';
-import themes from '../base-layout/themes';
+import { FooterWrapper, GitHub, CopyRight } from './styles';
+import { withRouter } from 'react-router-dom';
 
-const Footer = props => (
-  <Footer>
-    <FooterContent>
-      <Button text="Previous" />
-      <Button text="Next" />
-    </FooterContent>
-  </Footer>
-)
+const Footer = props => {
+  console.log(props);
+  return (
+      <FooterWrapper page={props.location.pathname}>
+          <GitHub>GitHub</GitHub>
+          <CopyRight>Carl Åberg 2018</CopyRight>
+      </FooterWrapper>
+  )
+}
 
-export default Footer;
+export default withRouter(Footer);

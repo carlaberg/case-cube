@@ -5,8 +5,13 @@ export default {
     hrColor: 'rgba(255, 255, 255, 0.5)'
   },  
   light: {
-    backgroundColor: 'var(--white)',
+    backgroundColor: 'none',
     textColor: 'var(--black)',
-    hrColor: 'var(--light-grey)'
+    hrColor: 'var(--ultra-light-grey)'
+  },
+  bare: {
+    backgroundColor: 'none',
+    textColor: 'var(--black)',
+    hrColor: 'none'
   }
 }

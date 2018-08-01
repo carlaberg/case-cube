@@ -1,9 +1,12 @@
 @import "variables";
 
-body {
+html, body, #root {
   height: 100%;
   width: 100%;
-  background: var(--site-bg);
+}
+
+body {
+    background: var(--site-bg);    
 }
 
 input[name="order"] {
