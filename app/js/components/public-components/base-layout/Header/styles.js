@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { animated } from 'react-spring';
 
-export const Wrapper = styled.header`
+export const Wrapper = styled(animated.header)`
   padding: var(--gutter-20) var(--horizontal-padding);
   display: flex;
   align-items: center;

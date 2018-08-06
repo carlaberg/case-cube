@@ -8,7 +8,6 @@ class Modal extends Component {
     return (
       <Transition
         native
-        key={1}
         from={{ opacity: 0, y: '50px', scale: '0.5' }}
         enter={{ opacity: 1, y: '0px', scale: '1' }}
         leave={{ opacity: 0, y: '50px', scale: '0' }}

@@ -1,11 +1,15 @@
 import React from 'react';
 import CaseCube from '../CaseCube';
+import { HomeComponent } from './styles';
 
-const Home = props => {
+const Home = ({ style: { opacity, scale }}) => {
   return (
-    <div>
-      <CaseCube />
-    </div>
+      <HomeComponent style={{
+        opacity: opacity.interpolate( opacity => opacity ),
+        transform: scale.interpolate( scale => `scale(${ scale })` )
+      }} >
+        <CaseCube />
+      </HomeComponent>
   )
 }
 

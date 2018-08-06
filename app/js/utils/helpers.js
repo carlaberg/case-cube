@@ -23,3 +23,20 @@ export const formatDate = date => {
   
   return `${y}-${m}-${d}`;
 }
+
+export const animationPromise = ( duration, slotName ) => {
+  return new Promise(( resolve, reject ) => {
+    setTimeout(() => { resolve( slotName )}, duration);
+  });
+}
+
+export function setAnimationState( animationSlots ) {
+  Object.keys(animationSlots).forEach(( key, index ) => {
+    
+    animationPromise( animationSlots[ key ], key )
+      .then( response => {
+        this.setState({ animationState: response });
+      });
+    
+  })
+}

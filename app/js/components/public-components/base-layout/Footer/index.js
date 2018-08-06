@@ -3,7 +3,6 @@ import { FooterWrapper, GitHub, CopyRight } from './styles';
 import { withRouter } from 'react-router-dom';
 
 const Footer = props => {
-  console.log(props);
   return (
       <FooterWrapper page={props.location.pathname}>
           <GitHub>GitHub</GitHub>

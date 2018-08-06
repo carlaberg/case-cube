@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { tabletPortrait, desktop, desktopLarge } from '../../../../styles/breakpoints';
+import { animated } from 'react-spring';
 
-export const Hero = styled.div`
+export const Hero = styled(animated.div)`
   width: 100%;
   padding: var(--gutter-20);
   padding-top: 0;
@@ -67,33 +68,36 @@ export const Hero = styled.div`
       max-width: 100%;
       height: 15vw;
     }
-  }
-  
-  h1 {
-    display: inline-block;
-    font-family: 'maaxbold';
-    font-size: var(--billboard);
-    color: var(--black);
-    text-transform: uppercase;
-    width: calc(60% - var(--gutter-40));
-    vertical-align: top;
-    hyphens: auto;
-    background: white;
-    margin-top: -15%;
-    position: relative;
-    z-index: 1;
-    transform: translateX(var(--gutter-20));
-    padding: 20px;
-    
-    @media (min-width: ${ tabletPortrait }) {
-      margin-top: -10%;
-      padding: 40px;
-      transform: translateX(var(--gutter-40));
-    }
+  }  
 }
-  }
 `
 
-export const Image = styled.div`
-  margin-bottom: var(--gutter-20);
+export const HeroImage = styled(animated.div)`
+  
+`
+
+export const HeroTitleBox = styled(animated.h1)`
+  display: inline-block;
+  font-family: 'maaxbold';
+  font-size: var(--billboard);
+  color: var(--black);
+  text-transform: uppercase;
+  width: calc(60% - var(--gutter-40));
+  vertical-align: top;
+  hyphens: auto;
+  background: white;
+  margin-top: -15%;
+  position: relative;
+  z-index: 1;
+  transform: translateX(var(--gutter-20));
+  padding: 20px;
+
+  @media (min-width: ${ tabletPortrait }) {
+    margin-top: -10%;
+    padding: 40px;
+    transform: translateX(var(--gutter-40));
+  }
+`
+export const HeroTitle = styled(animated.span)`
+  display: block;
 `

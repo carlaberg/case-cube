@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { interpolate, config } from 'react-spring';
 import { fetchFeaturedCases } from '../../../actions';
 import './Case.scss';
-import { formatDate } from '../../../utils/helpers';
-import { CaseNavigation, CaseWrapper } from './styles';
+import { formatDate, setAnimationState } from '../../../utils/helpers';
+import { CaseNavigation, CaseWrapper, ExpandingCircle, CaseContent } from './styles';
 import Section from '../base-layout/Section';
 import CaseHero from '../CaseHero';
 import CaseImage from '../CaseImage';
@@ -15,12 +16,18 @@ import Button from '../Button';
 import Video from '../../generic-components/Video';
 
 class Case extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.expandingCircle = React.createRef();
+  }
   componentDidMount() {
     this.props.fetchFeaturedCases();
-  } 
+  }
    
   getCaseIndex() {
-    const { featuredCases, match: { params: { title } }} = this.props;
+    const { featuredCases, location: { pathname } } = this.props;
+    const title = pathname.split('/').slice(-1)[0];
     return featuredCases.findIndex( item => item.title === title );
   }
   
@@ -39,46 +46,63 @@ class Case extends React.Component {
     return featuredCases[nextIndex];
   }
   
+  handleTransition( e, direction ) {
+    e.preventDefault();
+    const url = direction === 'next' ? this.getCase('next').title : this.getCase('prev').title;
+      
+    this.expandingCircle.current.classList.add('expanded');
+    
+    setTimeout(() => {
+      this.expandingCircle.current.classList.remove('expanded');
+      this.props.history.push(`/cases/${ url }`);
+    }, 500)
+  }
+  
   render() {
-    if(!this.props.featuredCases) return 'Loading';
-    const { match: { params: { title } }, featuredCases, style } = this.props;
+    if(!this.props.featuredCases) return '';
+    
+    const  { location: { pathname }, featuredCases } = this.props;
+    const title = pathname.split('/').slice(-1)[0];
     const single = featuredCases.filter(item => item.title === title);
     const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo: { src: videoSrc }, caseInfo, casePics } = single[0];
     
     return (
-      <CaseWrapper style={{ ...style }}>
-        <CaseHero heroUrl={ src } title={ caseTitle }/>
-        <Section id="01" created={ formatDate( created ) }>
-          <CaseImage 
-            url={ src }
-            text={{ title, description }}
-          />
-        </Section>
-        <Section id="01" created={ formatDate( created ) }>
-          <Video src={ videoSrc } />
-        </Section>
-        <Section id="01" 
-          theme="dark" 
-          title="Project info" 
-          height={ "50vh" }
-          created={ formatDate( created ) }
+      <CaseWrapper>
+        <CaseContent>
+          <CaseHero key={ this.props.match.params.slug } heroUrl={ src } title={ caseTitle }/>
+          <Section id="01" created={ formatDate( created ) }>
+            <CaseImage 
+              url={ src }
+              text={{ title, description }}
+            />
+          </Section>
+          {/* <Section id="01" created={ formatDate( created ) }>
+            <Video src={ videoSrc } />
+          </Section> */}
+          <Section id="01" 
+            theme="dark" 
+            title="Project info" 
+            height={ "50vh" }
+            created={ formatDate( created ) }
+            >
+            <InfoList caseInfo={ caseInfo } />
+          </Section>
+          <Section id="01" created={ formatDate( created ) }>
+            <FancyGallery images={ casePics } />
+          </Section>
+          <Section 
+            theme='bare' 
+            padding='0px 40px'
           >
-          <InfoList caseInfo={ caseInfo } />
-        </Section>
-        <Section id="01" created={ formatDate( created ) }>
-          <FancyGallery images={ casePics } />
-        </Section>
-        <Section 
-          theme='bare' 
-          padding='0px 40px'
-        >
-          <CaseNavigation>
-            <Link to={`/cases/${ this.getCase('prev').title }`}><Button text="Previous" /></Link>
-            <Link to={`/cases/${ this.getCase('next').title }`}><Button text="next" /></Link>
-          </CaseNavigation>
-        </Section>
+            <CaseNavigation>
+              <a onClick={ e => this.handleTransition(e, 'prev') }><Button text="Previous" /></a>
+              <a onClick={ e => this.handleTransition(e, 'next') }><Button text="Next" /></a>
+            </CaseNavigation>
+          </Section>
+        </CaseContent>
+        <ExpandingCircle innerRef={ this.expandingCircle }/>
       </CaseWrapper>
-    );
+    )
   }
 }
 

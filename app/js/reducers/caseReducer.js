@@ -5,7 +5,7 @@ export const caseReducer = (state={}, action) => {
   switch(action.type) {
 
     case FETCH_CASES:
-    console.log(action.payload);
+    
         const cases = {};
         action.payload.forEach(item => {
           Object.assign(cases, {[item.caseId]: item})
@@ -16,7 +16,7 @@ export const caseReducer = (state={}, action) => {
       };
 
     case FETCH_FEATURED_CASES:
-      console.log(action.payload);
+      
       return {
         ...state,
         cases: {
