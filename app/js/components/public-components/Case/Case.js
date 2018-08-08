@@ -76,9 +76,9 @@ class Case extends React.Component {
               text={{ title, description }}
             />
           </Section>
-          {/* <Section id="01" created={ formatDate( created ) }>
+          <Section id="01" created={ formatDate( created ) }>
             <Video src={ videoSrc } />
-          </Section> */}
+          </Section>
           <Section id="01" 
             theme="dark" 
             title="Project info" 
