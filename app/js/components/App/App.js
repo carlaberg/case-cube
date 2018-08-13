@@ -26,7 +26,6 @@ class App extends React.Component {
       <Router>
         <Route render={ ({ location }) => (
           <ScrollToTop>
-            { console.log(location.pathname)}
             <SiteContainer>
               <Header key={ location.pathname}/>
               <ContentContainer> 
@@ -36,6 +35,7 @@ class App extends React.Component {
                     from={{ opacity: 0, scale: 0 }}
                     enter={{ opacity: 1, scale: 1 }}
                     leave={{ opacity: 0, scale: 0 }}
+                    config={{ tension: 1, friction: 8 }}
                   >
                     {style => (
                       <Switch location={ location }>

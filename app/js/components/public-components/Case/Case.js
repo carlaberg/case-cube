@@ -64,7 +64,7 @@ class Case extends React.Component {
     const  { location: { pathname }, featuredCases } = this.props;
     const title = pathname.split('/').slice(-1)[0];
     const single = featuredCases.filter(item => item.title === title);
-    const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo: { src: videoSrc }, caseInfo, casePics } = single[0];
+    const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo = null, caseInfo, casePics } = single[0];
     
     return (
       <CaseWrapper>
@@ -72,13 +72,15 @@ class Case extends React.Component {
           <CaseHero key={ this.props.match.params.slug } heroUrl={ src } title={ caseTitle }/>
           <Section id="01" created={ formatDate( created ) }>
             <CaseImage 
-              url={ src }
+              url={ casePics[1].src }
               text={{ title, description }}
             />
           </Section>
-          <Section id="01" created={ formatDate( created ) }>
-            <Video src={ videoSrc } />
-          </Section>
+          { caseVideo && (
+            <Section id="01" created={ formatDate( created ) }>
+              <Video src={ caseVideo.src } />
+            </Section>
+          )}
           <Section id="01" 
             theme="dark" 
             title="Project info" 

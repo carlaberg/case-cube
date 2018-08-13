@@ -22,6 +22,7 @@ export const Category = styled.div`
   @media (min-width: ${ tabletPortrait }) {
     width: 200px;
     display: inline-block;
+    flex-shrink: 0;
   }
 `
 

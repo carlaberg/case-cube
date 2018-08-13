@@ -59,6 +59,11 @@ export const addCase = async caseData => {
         publicId: savedImgs.casePics[index]['public_id']
       }
     });
+    
+    const caseVideo = savedImgs.video.length > 0 ? {
+      src: savedImgs.video[0]['secure_url'],
+      publicId: savedImgs.video[0]['public_id']
+    } : null;
 
     const dbObject = {
         title: caseData.title,
@@ -67,10 +72,7 @@ export const addCase = async caseData => {
           caption: caseData.caseHeroImg.caption,
           publicId: savedImgs.hero[0]['public_id']          
         },
-        caseVideo: {
-          src: savedImgs.video[0]['secure_url'],
-          publicId: savedImgs.video[0]['public_id']
-        },
+        caseVideo,
         caseInfo: caseData.caseInfo,
         casePics,
         description: caseData.description,
@@ -93,7 +95,7 @@ export const updateCase = async caseData => {
       formData.append('hero', caseData.caseHeroImg.fileData);
     }
     
-    if(caseData.caseVideo.fileData) {
+    if(caseData.caseVideo && caseData.caseVideo.fileData) {
       formData.append('video', caseData.caseVideo.fileData);
     }
     
@@ -129,6 +131,11 @@ export const updateCase = async caseData => {
           }
       }
     });
+    
+    const caseVideo = savedImgs.video.length > 0 ? {
+      src: savedImgs.video[0] ? savedImgs.video[0]['secure_url'] : caseData.caseVideo.src,
+      publicId: savedImgs.video[0] ? savedImgs.video[0]['public_id'] : caseData.caseVideo.publicId,
+    } : null;
 
     const dbObject = {
         caseId: caseData.caseId,
@@ -138,10 +145,7 @@ export const updateCase = async caseData => {
           caption: caseData.caseHeroImg.caption,
           publicId: savedImgs.hero[0] ? savedImgs.hero[0]['public_id'] : caseData.caseHeroImg.publicId
         },
-        caseVideo: {
-          src: savedImgs.video[0] ? savedImgs.video[0]['secure_url'] : caseData.caseVideo.src,
-          publicId: savedImgs.video[0] ? savedImgs.video[0]['public_id'] : caseData.caseVideo.publicId,
-        },
+        caseVideo,
         casePics,
         caseInfo: caseData.caseInfo,
         description: caseData.description,

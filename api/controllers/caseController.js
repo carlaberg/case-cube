@@ -39,8 +39,7 @@ exports.getFeaturedCases = async (req, res) => {
       .sort({ [ sortItem ]: 'asc'})
       .limit(limit)
       .exec();
-      
-    console.log(cases);  
+       
     res.json(cases);
 
   } catch(err) {
@@ -95,7 +94,7 @@ exports.insertCase = async (req, res, next) => {
     const newcase = new Case(req.body);
     await newcase.save();
     res.json(newcase);
-    console.log("case saved");
+
   } catch(err) {
     console.error(err.message);
   }
@@ -107,14 +106,14 @@ exports.updateCase = async (req, res, next) => {
   try {
     Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
       if(err) {
-        console.log('Could not update case', err);
+        console.error('Could not update case', err);
       }
       removeUnusedImgs();
       removeUnusedImgsCloudinary();
       res.json(doc)
     })
   } catch(err) {
-      console.log(err.message);
+      console.error(err.message);
   }
 };
 
@@ -123,13 +122,13 @@ exports.deleteCase = async (req, res, next) => {
   try {
     Case.remove({caseId: req.body.id}, (err, doc) => {
       if(err) {
-        console.log('Could not remove', err);
+        console.error('Could not remove', err);
       }
       removeUnusedImgs();
       removeUnusedImgsCloudinary();
       res.json(doc)
     });
   } catch(err) {
-      console.log(err.message);
+      console.error(err.message);
   }
 };

@@ -81,7 +81,6 @@ const cube = (parentEl, history) => {
   var renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(colors.bg);
-  console.log(parentEl);
   parentEl.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
   renderer.shadowMapType = THREE.PCFSoftShadowMap;
@@ -146,10 +145,10 @@ const cube = (parentEl, history) => {
           history.push(`/cases/${cases[3].title}`);
           break;
         case 2:
-          history.push(`/cases/${cases[5].title}`);
+          history.push(`/cases/${cases[4].title}`);
           break;
         case 3:
-          history.push(`/cases/${cases[4].title}`);
+          // history.push(`/cases/${cases[4].title}`);
           break;
         case 4:
           texts[0].position.z = 0;
@@ -160,6 +159,9 @@ const cube = (parentEl, history) => {
           break;
       }
     } else {
+      if(!cube.geometry.faces[intersects[0]]) {
+        return;
+      }
       cube.geometry.faces[intersects[0].faceIndex].color.set(colors.onHover);
       geometry.colorsNeedUpdate = true;
     }
@@ -209,13 +211,21 @@ const cube = (parentEl, history) => {
   }
 
   function createText(font) {
-    console.log('create Text');
     cases.forEach((item, index) => {
-      var textGeo = new THREE.TextGeometry('#' + (index + 1), {
-        font: font,
-        size: 0.35,
-        height: 0.05
-      });
+      let textGeo;
+      if(index === 4) {
+        textGeo = new THREE.TextGeometry('TBA', {
+          font: font,
+          size: 0.25,
+          height: 0.05
+        });
+      } else {
+        textGeo = new THREE.TextGeometry('#' + (index + 1), {
+          font: font,
+          size: 0.35,
+          height: 0.05
+        });
+      }
 
       var textMaterial = new THREE.MeshLambertMaterial({ color: colors.text });
 
@@ -282,7 +292,6 @@ const cube = (parentEl, history) => {
   planeMesh.rotation.x = 90 * Math.PI / 180;
   planeMesh.receiveShadow = true;
   // scene.add(planeMesh);
-  console.log(texts);
   function animate() {
     window.requestAnimationFrame(animate);
 

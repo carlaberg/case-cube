@@ -9,7 +9,7 @@ cloudinary.config({
 const promisifyMediaUpload = async mediaObject => {
 
     const uploadPromises = [];
-    console.log('mediaObject', mediaObject);
+
     for (const prop in mediaObject) {
 
         mediaObject[prop].forEach(media => {

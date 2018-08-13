@@ -6,4 +6,5 @@ export const CanvasWrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  transform: translateY(-5vw);
 `
