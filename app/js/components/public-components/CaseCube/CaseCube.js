@@ -4,8 +4,19 @@ import { CanvasWrapper } from './styles';
 import cube from './cube';
 
 class CaseCube extends Component {
+  constructor(props) {
+    super(props);
+    
+  }
+  
   componentDidMount() {
-    cube(this.caseCube, this.props.history);
+    this.cube = cube(this.caseCube, this.props.history);
+    this.cube.init();
+    this.cube.addListeners();
+  }
+  
+  componentWillUnmount() {
+    this.cube.removeListeners();
   }
 
   render() {

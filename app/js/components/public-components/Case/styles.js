@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { animated } from 'react-spring';
+import { mobileLandscape } from '../../../../styles/breakpoints';
 
 export const CaseWrapper = styled(animated.div)`
   width: 100%;
@@ -29,5 +30,22 @@ export const CaseContent =  styled(animated.div)`
 
 export const CaseNavigation = styled.div`
   display: flex; 
+  flex-direction: column;
   justify-content: space-between;
+  
+  @media (min-width: ${ mobileLandscape }) {
+    flex-direction: row;
+  }
+  
+  button {
+    width: 100%;
+    &:first-of-type {
+      margin-bottom: var(--gutter-20);
+    }
+    
+    @media (min-width: ${ mobileLandscape }) {
+      width: auto;
+      margin-bottom: 0;
+    }
+  }
 `

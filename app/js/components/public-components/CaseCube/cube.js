@@ -10,22 +10,22 @@ const colors = {
   onHover: 0xff00ff
 }
 
+var cases = [
+  { id: 1, faceIndexes: [8, 9] },
+  { id: 2, faceIndexes: [10, 11] },
+  { id: 3, faceIndexes: [0, 1] },
+  { id: 4, faceIndexes: [2, 3] },
+  { id: 5, faceIndexes: [6, 7] },
+  { id: 6, faceIndexes: [4, 5] }
+];
+
 const cube = (parentEl, history) => {
-
-  // ----> GLOBAL VARIABLES <----
   var cubeGroup;
-  var cases = [
-    { id: 1, faceIndexes: [8, 9] },
-    { id: 2, faceIndexes: [10, 11] },
-    { id: 3, faceIndexes: [0, 1] },
-    { id: 4, faceIndexes: [2, 3] },
-    { id: 5, faceIndexes: [6, 7] },
-    { id: 6, faceIndexes: [4, 5] }
-  ];
   var texts = [];
-
-  // ----> ADD SCENE <----
-  var scene = new THREE.Scene();
+  
+  // ----> ADD RAY CASTER <----
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
   
   // ----> ADD CAMERA <----
   var camera = new THREE.PerspectiveCamera(
@@ -40,61 +40,7 @@ const cube = (parentEl, history) => {
   // ----> ADD CUBE GROUP <----
   var cubeGroup = new THREE.Group();
   cubeGroup.rotation.set(0.1,0.15,0.1);
-
-  // ----> ADD DIRECTIONAL LIGHT 1 <----
-  var directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
-  directionalLight.castShadow = true;
-  directionalLight.position.set(-1.7, 2, 2);
-  scene.add(directionalLight);
-
-  var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
-  // scene.add(directionalLightHelper);
-
-  // ----> ADD DIRECTIONAL LIGHT 2 <----
-  var directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
-  directionalLight.castShadow = true;
-  directionalLight.position.set(1.7, 2, -2);
-  scene.add(directionalLight);
-
-  var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
-  // scene.add(directionalLightHelper);
-
-  // ----> ADD SPOTLIGHT <----
-  var spotLight = new THREE.SpotLight(0xffffff, 0.05);
-  spotLight.position.set(-1, 1, 3);
-  spotLight.angle = 0.7;
-  spotLight.distance = 5;
-  spotLight.intensity = 2;
-  spotLight.castShadow = true;
-  // scene.add(spotLight);
-
-  var spotLightHelper = new THREE.SpotLightHelper(spotLight);
-  // scene.add(spotLightHelper);
-
-  //<---- ADD AMBIENT LIGHT <----
-
-  var light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
-  scene.add(light);
-
-  //<---- ADD RENDERER <----
-
-  var renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(colors.bg);
-  parentEl.appendChild(renderer.domElement);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMapType = THREE.PCFSoftShadowMap;
   
-  window.addEventListener('resize', function () {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
-
-  //<---- ADD ORBIT CONTROLS ---->
-
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
   // <---- ADD CUBE ---->
 
   var geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -109,14 +55,168 @@ const cube = (parentEl, history) => {
   cube.castShadow = true;
   cube.geometry.computeBoundingBox();
   cubeGroup.add(cube);
+  
+  function init() {
+    // ----> ADD SCENE <----
+    var scene = new THREE.Scene();
 
-  // ----> ADD RAY CASTER <----
+    // ----> ADD DIRECTIONAL LIGHT 1 <----
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    directionalLight.castShadow = true;
+    directionalLight.position.set(-1.7, 2, 2);
+    scene.add(directionalLight);
 
-  var raycaster = new THREE.Raycaster();
-  var mouse = new THREE.Vector2();
+    var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
+    // scene.add(directionalLightHelper);
+
+    // ----> ADD DIRECTIONAL LIGHT 2 <----
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+    directionalLight.castShadow = true;
+    directionalLight.position.set(1.7, 2, -2);
+    scene.add(directionalLight);
+
+    var directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
+    // scene.add(directionalLightHelper);
+
+    // ----> ADD SPOTLIGHT <----
+    var spotLight = new THREE.SpotLight(0xffffff, 0.05);
+    spotLight.position.set(-1, 1, 3);
+    spotLight.angle = 0.7;
+    spotLight.distance = 5;
+    spotLight.intensity = 2;
+    spotLight.castShadow = true;
+    // scene.add(spotLight);
+
+    var spotLightHelper = new THREE.SpotLightHelper(spotLight);
+    // scene.add(spotLightHelper);
+
+    //<---- ADD AMBIENT LIGHT <----
+
+    var light = new THREE.AmbientLight(0xffffff, 0.5); // soft white light
+    scene.add(light);
+
+    //<---- ADD RENDERER <----
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(colors.bg);
+    parentEl.appendChild(renderer.domElement);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    
+    window.addEventListener('resize', function () {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+
+    //<---- ADD ORBIT CONTROLS ---->
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    
+    // ----> ADD TEXT <----
+
+    var loader = new THREE.FontLoader();
+
+    loader.load('fonts/helvetiker_regular.typeface.json', createText);
+
+    function pushed(element) {
+      element.position.z = -1;
+    }
+
+    function createText(font) {
+      cases.forEach((item, index) => {
+        let textGeo;
+        if(index === 4) {
+          textGeo = new THREE.TextGeometry('TBA', {
+            font: font,
+            size: 0.25,
+            height: 0.05
+          });
+        } else {
+          textGeo = new THREE.TextGeometry('#' + (index + 1), {
+            font: font,
+            size: 0.35,
+            height: 0.05
+          });
+        }
+
+        var textMaterial = new THREE.MeshLambertMaterial({ color: colors.text });
+
+        var textMesh = new THREE.Mesh(textGeo, textMaterial);
+
+        textMesh.castShadow = true;
+        item.textId = index;
+        texts.push(textMesh);
+        texts[index].faceIndexes = item.faceIndexes;
+        cubeGroup.add(textMesh);
+
+        switch (index) {
+          case 0:
+            textMesh.position.x = -0.31;
+            textMesh.position.y = -0.15;
+            textMesh.position.z = 0.5;
+            break;
+          case 1:
+            textMesh.position.x = 0.31;
+            textMesh.position.y = -0.15;
+            textMesh.position.z = -0.5;
+            textMesh.rotation.y = 180 * Math.PI / 180;
+            break;
+          case 2:
+            textMesh.position.x = 0.5;
+            textMesh.position.y = -0.15;
+            textMesh.position.z = 0.31;
+            textMesh.rotation.y = 90 * Math.PI / 180;
+            break;
+          case 3:
+            textMesh.position.x = -0.5;
+            textMesh.position.y = -0.15;
+            textMesh.position.z = -0.31;
+            textMesh.rotation.y = 270 * Math.PI / 180;
+            break;
+          case 4:
+            textMesh.position.x = -0.31;
+            textMesh.position.y = -0.5;
+            textMesh.position.z = -0.15;
+            textMesh.rotation.x = 90 * Math.PI / 180;
+            break;
+          case 5:
+            textMesh.position.x = -0.31;
+            textMesh.position.y = 0.5;
+            textMesh.position.z = 0.15;
+            textMesh.rotation.x = 270 * Math.PI / 180;
+            break;
+        }
+      });
+    }
+
+    // <---- ADD CUBE GROUP TO SCENE ---->
+    scene.add(cubeGroup);
+
+    // <---- ADD PLANE ---->
+    var planeGeometry = new THREE.PlaneGeometry(100, 100);
+    var planeMaterial = new THREE.MeshLambertMaterial({
+      color: colors.plane,
+      side: THREE.DoubleSide
+    });
+    var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+
+    planeMesh.position.y = -1;
+    planeMesh.rotation.x = 90 * Math.PI / 180;
+    planeMesh.receiveShadow = true;
+    // scene.add(planeMesh);
+    function animate() {
+      window.requestAnimationFrame(animate);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
 
   function onMouseDown(event) {
-    // event.preventDefault();
+
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
 
@@ -196,109 +296,22 @@ const cube = (parentEl, history) => {
       }
     });
   }
-
-  window.addEventListener('mousedown', onMouseDown, false);
-  window.addEventListener('mousemove', onMouseMove, false);
-
-  // ----> ADD TEXT <----
-
-  var loader = new THREE.FontLoader();
-
-  loader.load('fonts/helvetiker_regular.typeface.json', createText);
-
-  function pushed(element) {
-    element.position.z = -1;
+  
+  function addListeners() {
+    window.addEventListener('mousedown', onMouseDown, false);
+    window.addEventListener('mousemove', onMouseMove, false);
   }
-
-  function createText(font) {
-    cases.forEach((item, index) => {
-      let textGeo;
-      if(index === 4) {
-        textGeo = new THREE.TextGeometry('TBA', {
-          font: font,
-          size: 0.25,
-          height: 0.05
-        });
-      } else {
-        textGeo = new THREE.TextGeometry('#' + (index + 1), {
-          font: font,
-          size: 0.35,
-          height: 0.05
-        });
-      }
-
-      var textMaterial = new THREE.MeshLambertMaterial({ color: colors.text });
-
-      var textMesh = new THREE.Mesh(textGeo, textMaterial);
-
-      textMesh.castShadow = true;
-      item.textId = index;
-      texts.push(textMesh);
-      texts[index].faceIndexes = item.faceIndexes;
-      cubeGroup.add(textMesh);
-
-      switch (index) {
-        case 0:
-          textMesh.position.x = -0.31;
-          textMesh.position.y = -0.15;
-          textMesh.position.z = 0.5;
-          break;
-        case 1:
-          textMesh.position.x = 0.31;
-          textMesh.position.y = -0.15;
-          textMesh.position.z = -0.5;
-          textMesh.rotation.y = 180 * Math.PI / 180;
-          break;
-        case 2:
-          textMesh.position.x = 0.5;
-          textMesh.position.y = -0.15;
-          textMesh.position.z = 0.31;
-          textMesh.rotation.y = 90 * Math.PI / 180;
-          break;
-        case 3:
-          textMesh.position.x = -0.5;
-          textMesh.position.y = -0.15;
-          textMesh.position.z = -0.31;
-          textMesh.rotation.y = 270 * Math.PI / 180;
-          break;
-        case 4:
-          textMesh.position.x = -0.31;
-          textMesh.position.y = -0.5;
-          textMesh.position.z = -0.15;
-          textMesh.rotation.x = 90 * Math.PI / 180;
-          break;
-        case 5:
-          textMesh.position.x = -0.31;
-          textMesh.position.y = 0.5;
-          textMesh.position.z = 0.15;
-          textMesh.rotation.x = 270 * Math.PI / 180;
-          break;
-      }
-    });
+  
+  function removeListeners() {
+    window.removeEventListener('mousedown', onMouseDown, false);
+    window.removeEventListener('mousemove', onMouseMove, false);
   }
-
-  // <---- ADD CUBE GROUP TO SCENE ---->
-  scene.add(cubeGroup);
-
-  // <---- ADD PLANE ---->
-  var planeGeometry = new THREE.PlaneGeometry(100, 100);
-  var planeMaterial = new THREE.MeshLambertMaterial({
-    color: colors.plane,
-    side: THREE.DoubleSide
-  });
-  var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-
-  planeMesh.position.y = -1;
-  planeMesh.rotation.x = 90 * Math.PI / 180;
-  planeMesh.receiveShadow = true;
-  // scene.add(planeMesh);
-  function animate() {
-    window.requestAnimationFrame(animate);
-
-    renderer.render(scene, camera);
-  }
-
-  animate();
+  
+  return Object.freeze({
+    init,
+    addListeners,
+    removeListeners
+  })
 }
 
 export default cube;
