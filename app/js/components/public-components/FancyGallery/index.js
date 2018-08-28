@@ -5,7 +5,7 @@ import Toggle from '../../generic-components/Toggle';
 
 class FancyGallery extends Component {
   state = {
-    featuredImage: ''
+    featuredImage: '',
   }
   
   getFeaturedImage(e, toggle) {
@@ -27,6 +27,7 @@ class FancyGallery extends Component {
   
   render() {
     const { featuredImage } = this.state;
+    
     return (
       <GalleryWrapper>
         <Toggle>

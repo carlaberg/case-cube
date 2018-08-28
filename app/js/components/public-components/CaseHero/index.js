@@ -10,9 +10,19 @@ const Image = styled(AspectRatioBox)`
 `
 
 class CaseHero  extends Component {
-  state = { mounted: null }
+  constructor(props) {
+    super(props);
+    
+    this.heroImage = React.createRef();
+    
+    this.state = { 
+      mounted: null 
+    }
+  }
   componentDidMount() {
-      this.setState({ mounted: true })
+    this.heroImage.current.addEventListener('load', () => {
+      this.setState({ mounted: true });
+    });
   }
   render() {
     const { heroUrl, title } = this.props;
@@ -44,7 +54,7 @@ class CaseHero  extends Component {
                   transform: imageMove.interpolate( x => `translate3d(${x}px, 0px, 0px)` )
                 }}>
                   <Image>
-                    <img src={ heroUrl || imagePlaceholder } />
+                    <img ref={ this.heroImage } src={ heroUrl || imagePlaceholder } />
                   </Image>
                 </HeroImage>
                 <HeroTitleBox style={{

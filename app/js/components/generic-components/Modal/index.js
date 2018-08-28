@@ -3,6 +3,13 @@ import { Transition, config } from 'react-spring';
 import { ModalWrapper, Overlay, ModalContent } from './styles';
 
 class Modal extends Component {
+  handleClick() {
+    const { toggle, on } = this.props;
+    if(on) {
+      toggle();
+    }
+  }
+  
   render() {
     const { children, toggle, on } = this.props;
     return (
@@ -10,11 +17,11 @@ class Modal extends Component {
         native
         from={{ opacity: 0, y: '50px', scale: '0.5' }}
         enter={{ opacity: 1, y: '0px', scale: '1' }}
-        leave={{ opacity: 0, y: '50px', scale: '0' }}
+        leave={{ opacity: 0, y: '50px', scale: '0'}}
         >
           { on && 
             (styles => (
-              <ModalWrapper onClick={ toggle } style={{
+              <ModalWrapper onClick={ () => this.handleClick() } style={{
                  opacity: styles.opacity.interpolate( opacity => opacity )
                }}
                >
