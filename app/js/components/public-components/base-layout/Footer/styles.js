@@ -14,9 +14,13 @@ export const FooterWrapper = styled.footer`
   flex-shrink: 0;
   z-index: 1;
   ${ props => props.page !== '/' && 'border-top: 1px solid var(--ultra-light-grey)'};
+  
+  a, a:hover, a:active, a:visited {
+    color: var(--light-grey);
+  }
 `
 
-export const GitHub = styled.span`
+export const GitHub = styled.a`
   display: inline-block;
 `
 

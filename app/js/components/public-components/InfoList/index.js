@@ -1,18 +1,18 @@
 import React from 'react';
 import { List, ListItemWrapper, Category, ListEntry, Divider } from './styles';
 
-const InfoList = ({ caseInfo }) => {
+const InfoList = ({ info }) => {
   
-  const listItems = caseInfo.map((item, index) => {
-      const lastInfoItem = caseInfo.length - 1;
+  const listItems = info.map((item, index) => {
+      const lastInfoItem = info.length - 1;
     
       return (
         <React.Fragment key={ index }>
-          <ListItemWrapper>
-            <Category>{ item.key }</Category>
-            <ListEntry>{ item.value }</ListEntry>
-          </ListItemWrapper>
-          {(index < lastInfoItem && <Divider />)}
+            <ListItemWrapper>
+              <Category>{ item.key }</Category>
+              <ListEntry>{ item.value }</ListEntry>
+            </ListItemWrapper>
+            {(index < lastInfoItem && <Divider />)}
         </React.Fragment>
       )
   });

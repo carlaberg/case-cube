@@ -23,6 +23,7 @@ export const ContactLabel = styled.span`
   font-size: var(--xsmall);
   font-family: 'maaxregular';
   color: var(--black);
+  cursor: pointer;
 `
 
 export const HeaderLink = styled(Link)`

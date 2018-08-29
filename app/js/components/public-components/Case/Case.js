@@ -65,7 +65,7 @@ class Case extends React.Component {
     const title = pathname.split('/').slice(-1)[0];
     const single = featuredCases.filter(item => item.title === title);
     const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo = null, caseInfo, casePics } = single[0];
-    
+
     return (
       <CaseWrapper>
         <CaseContent>
@@ -87,7 +87,7 @@ class Case extends React.Component {
             height={ "50vh" }
             created={ formatDate( created ) }
             >
-            <InfoList caseInfo={ caseInfo } />
+            <InfoList info={ caseInfo } />
           </Section>
           <Section id="01" created={ formatDate( created ) }>
             <FancyGallery images={ casePics } />

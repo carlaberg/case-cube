@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Transition, config } from 'react-spring';
 import { ModalWrapper, Overlay, ModalContent } from './styles';
+import Portal from '../Portal';
 
 class Modal extends Component {
   handleClick() {
@@ -21,20 +22,22 @@ class Modal extends Component {
         >
           { on && 
             (styles => (
-              <ModalWrapper onClick={ () => this.handleClick() } style={{
-                 opacity: styles.opacity.interpolate( opacity => opacity )
-               }}
-               >
-                <Overlay />
-                <ModalContent style={{
-                   opacity: styles.opacity.interpolate( opacity => opacity ),
-                   transform: styles.y.interpolate( y => `translate3d(0, ${y}, 0)` )
-                 }}
-                 config={ config.fast }
-                 >
-                  {children()}
-                </ModalContent>
-              </ModalWrapper>
+              <Portal>
+                <ModalWrapper onClick={ () => this.handleClick() } style={{
+                  opacity: styles.opacity.interpolate( opacity => opacity )
+                }}
+                >
+                  <Overlay />
+                  <ModalContent style={{
+                    opacity: styles.opacity.interpolate( opacity => opacity ),
+                    transform: styles.y.interpolate( y => `translate3d(0, ${y}, 0)` )
+                  }}
+                  config={ config.fast }
+                  >
+                    {children()}
+                  </ModalContent>
+                </ModalWrapper>
+              </Portal>
             ))}
       </Transition>
     )

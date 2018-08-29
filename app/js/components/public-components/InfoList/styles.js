@@ -30,10 +30,13 @@ export const ListEntry = styled.div`
   font-family: "maaxregular";
   font-size:  var(--xsmall);
   letter-spacing: 2px;
+  word-break: break-all;
+  transform: translateY(5px); 
   
   @media (min-width: ${ tabletPortrait }) {
     width: auto;
     display: inline-block;
+    word-break: normal;
   }
 `
 

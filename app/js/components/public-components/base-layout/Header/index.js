@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Wrapper, ContactLabel, HeaderLink } from './styles';
 import { Spring } from 'react-spring';
 import Icon from '../../../generic-components/Icon';
+import Toggle from '../../../generic-components/Toggle';
+import Modal from '../../../generic-components/Modal';
+import Contact from '../../../public-components/Contact';
 
 class Header extends Component {
     state = { mounted: false }
@@ -28,7 +31,20 @@ class Header extends Component {
                 }}
               >
                 <HeaderLink to="/"><Icon name="cube" /></HeaderLink>
-                <ContactLabel>Contact</ContactLabel>
+                <Toggle>
+                  {({ on, toggle }) => {
+                    return (
+                      <Fragment>
+                          <ContactLabel onClick={ toggle }>Contact</ContactLabel>
+                          <Modal toggle={ toggle } on={ on }>
+                            {() => (
+                              <Contact theme="light" />
+                            )}
+                          </Modal>
+                      </Fragment>
+                    )
+                  }}
+                </Toggle>
               </Wrapper>  
             )}
           </Spring>

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 const Footer = props => {
   return (
       <FooterWrapper page={props.location.pathname}>
-          <GitHub>GitHub</GitHub>
+          <GitHub href="https://github.com/carlaberg">GitHub</GitHub>
           <CopyRight>Carl Åberg 2018</CopyRight>
       </FooterWrapper>
   )
