@@ -67,6 +67,7 @@ export const addCase = async caseData => {
 
     const dbObject = {
         title: caseData.title,
+        slug: caseData.title.toLowerCase().replace(' ', '-'),
         caseHeroImg: {
           src: savedImgs.hero[0]['secure_url'],
           caption: caseData.caseHeroImg.caption,
@@ -140,6 +141,7 @@ export const updateCase = async caseData => {
     const dbObject = {
         caseId: caseData.caseId,
         title: caseData.title,
+        slug: caseData.title.toLowerCase().replace(' ', '-'),
         caseHeroImg: {
           src: savedImgs.hero[0] ? savedImgs.hero[0]['secure_url'] : caseData.caseHeroImg.src,
           caption: caseData.caseHeroImg.caption,

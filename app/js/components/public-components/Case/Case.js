@@ -27,8 +27,8 @@ class Case extends React.Component {
    
   getCaseIndex() {
     const { featuredCases, location: { pathname } } = this.props;
-    const title = pathname.split('/').slice(-1)[0];
-    return featuredCases.findIndex( item => item.title === title );
+    const slug = pathname.split('/').slice(-1)[0];
+    return featuredCases.findIndex( item => item.slug === slug );
   }
   
   getCase(direction) {
@@ -48,8 +48,8 @@ class Case extends React.Component {
   
   handleTransition( e, direction ) {
     e.preventDefault();
-    const url = direction === 'next' ? this.getCase('next').title : this.getCase('prev').title;
-      
+    const url = direction === 'next' ? this.getCase('next').slug : this.getCase('prev').slug;
+    
     this.expandingCircle.current.classList.add('expanded');
     
     setTimeout(() => {
@@ -62,8 +62,8 @@ class Case extends React.Component {
     if(!this.props.featuredCases) return '';
     
     const  { location: { pathname }, featuredCases } = this.props;
-    const title = pathname.split('/').slice(-1)[0];
-    const single = featuredCases.filter(item => item.title === title);
+    const slug = pathname.split('/').slice(-1)[0];
+    const single = featuredCases.filter(item => item.slug === slug);
     const { created, caseHeroImg: { src }, title: caseTitle, description, caseVideo = null, caseInfo, casePics } = single[0];
 
     return (
@@ -73,7 +73,7 @@ class Case extends React.Component {
           <Section id="01" created={ formatDate( created ) }>
             <CaseImage 
               url={ casePics[1].src }
-              text={{ title, description }}
+              text={{ caseTitle, description }}
             />
           </Section>
           { caseVideo && (

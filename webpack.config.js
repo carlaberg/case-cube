@@ -2,7 +2,7 @@ const path = require("path");
 
 
 module.exports = {
-  entry: ["babel-polyfill", "./app/entry.js"],
+  entry: ["babel-polyfill", "whatwg-fetch", "./app/entry.js"],
   output: {
     path: path.resolve(__dirname, "public/js"),
     filename: "bundle.js",

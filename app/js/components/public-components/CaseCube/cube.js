@@ -216,12 +216,11 @@ const cube = (parentEl, history) => {
   }
 
   function onMouseDown(event) {
-
     // calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
 
     mouse.x = event.clientX / window.innerWidth * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
     // update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
@@ -239,23 +238,23 @@ const cube = (parentEl, history) => {
       var index = Math.floor(intersects[0].faceIndex / 2);
       switch (index) {
         case 0:
-          history.push(`/cases/${cases[2].title}`);
+          history.push(`/cases/${cases[2].slug}`);
           break;
         case 1:
-          history.push(`/cases/${cases[3].title}`);
+          history.push(`/cases/${cases[3].slug}`);
           break;
         case 2:
-          history.push(`/cases/${cases[4].title}`);
+          history.push(`/cases/${cases[4].slug}`);
           break;
         case 3:
-          // history.push(`/cases/${cases[4].title}`);
+          // history.push(`/cases/${cases[4].slug}`);
           break;
         case 4:
           texts[0].position.z = 0;
-          history.push(`/cases/${cases[0].title}`);
+          history.push(`/cases/${cases[0].slug}`);
           break;
         case 5:
-          history.push(`/cases/${cases[1].title}`);
+          history.push(`/cases/${cases[1].slug}`);
           break;
       }
     } else {
@@ -274,7 +273,7 @@ const cube = (parentEl, history) => {
 
     mouse.x = event.clientX / window.innerWidth * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
+    
     // update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 

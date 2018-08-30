@@ -12,6 +12,7 @@ const caseSchema = new mongoose.Schema({
     trim: true,
     required: 'Please enter a case title.'
   },
+  slug: String,
   caseHeroImg: {},
   caseInfo: Array,
   caseVideo: {},

@@ -11,5 +11,4 @@ export const SiteContainer = styled.main`
 
 export const ContentContainer = styled.div`
   flex: 1 0 auto;
-  position: relative;
 `
