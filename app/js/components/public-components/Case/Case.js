@@ -71,10 +71,12 @@ class Case extends React.Component {
         <CaseContent>
           <CaseHero key={ this.props.match.params.slug } heroUrl={ src } title={ caseTitle }/>
           <Section id="01" created={ formatDate( created ) }>
-            <CaseImage 
-              url={ casePics[1].src }
-              text={{ caseTitle, description }}
-            />
+            {casePics.length > 0 && (
+              <CaseImage 
+                url={ casePics[1].src }
+                text={{ caseTitle, description }}
+              />
+            )}
           </Section>
           { caseVideo && (
             <Section id="01" created={ formatDate( created ) }>

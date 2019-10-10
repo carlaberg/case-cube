@@ -6,7 +6,6 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
 import caseCube from "./js/reducers";
-
 import App from "./js/components/App/App";
 import "./styles/bootstrap/bootstrap.scss"
 import "./styles/main.scss";

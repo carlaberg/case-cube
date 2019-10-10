@@ -3,7 +3,9 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 const autoIncrement = require('mongoose-auto-increment');
 
-mongoose.connect(process.env.MONGODB_URI);
+const uri = process.env.NODE_ENV === 'development' ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI_DEV;
+
+mongoose.connect(uri);
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 global.__basedir = __dirname; // Set __basedir to root

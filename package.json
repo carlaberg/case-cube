@@ -7,7 +7,7 @@
         "devserver": "webpack-dev-server --open",
         "dev2": "webpack -wd",
         "custom:server": "node start.js --exec babel-node",
-        "custom:localserver": "nodemon start.js --exec babel-node",
+        "custom:localserver": "NODE_ENV=development nodemon start.js --exec babel-node",
         "dev": "npm run custom:localserver && npm run devserver",
         "start": "npm run custom:server",
         "postinstall": "webpack -p"
@@ -31,6 +31,7 @@
         "webpack-dev-server": "^2.4.5"
     },
     "dependencies": {
+        "@react-pdf/renderer": "^1.6.7",
         "babel-core": "^6.25.0",
         "babel-polyfill": "^6.26.0",
         "body-parser": "^1.17.1",

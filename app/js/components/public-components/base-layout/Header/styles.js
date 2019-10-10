@@ -17,17 +17,37 @@ export const Wrapper = styled(animated.header)`
   }
 `
 
-export const ContactLabel = styled.span`
+export const Menu = styled.nav``
+
+export const MenuItem = styled.li`
   display: inline-block;
   text-transform: uppercase;
   font-size: var(--xsmall);
   font-family: 'maaxregular';
   color: var(--black);
   cursor: pointer;
+  margin-right: 2rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    text-decoration: underline;      
+  }
 `
 
 export const HeaderLink = styled(Link)`
   display: block;
   width: 40px;
-  
+`
+
+export const MenuItemLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+
+  &:hover {
+    color: black;
+    text-decoration: none;      
+  }
 `
