@@ -3,9 +3,9 @@ import { ThemeProvider } from 'styled-components';
 import { ButtonWrapper, ButtonText } from './styles';
 import themes from './themes';
 
-const Button = ({ text, theme }) => (
+const Button = ({ text, theme, className }) => (
   <ThemeProvider theme={ themes[ theme ] }>
-    <ButtonWrapper>
+    <ButtonWrapper className={className}>
       <ButtonText>{ text }</ButtonText>
     </ButtonWrapper>    
   </ThemeProvider>

@@ -17,7 +17,7 @@ const Section = ({ id, created, children, theme , title, height, padding }) => {
           )}
           <SectionInner>
             <SectionLeft>{ created }</SectionLeft>
-            <SectionContent>
+            <SectionContent data-selector="section-content">
               {( title &&
                 <SectionTitle>
                   { (title && title )}
@@ -33,7 +33,8 @@ const Section = ({ id, created, children, theme , title, height, padding }) => {
 }
 
 Section.defaultProps = {
-  theme: "light"
+  theme: 'light',
+  created: 'created date' 
 }
 
 export default Section;

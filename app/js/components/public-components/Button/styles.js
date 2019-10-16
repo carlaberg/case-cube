@@ -5,6 +5,8 @@ export const ButtonWrapper = styled.button`
   border: 3px solid ${ props => props.theme.borderColor };
   min-width: 200px;
   outline: none;
+  background: none;
+  cursor: pointer;
   
   &:focus {
     outline: none;

@@ -5,7 +5,6 @@ import Icon from '../../../generic-components/Icon';
 import Toggle from '../../../generic-components/Toggle';
 import Modal from '../../../generic-components/Modal';
 import Contact from '../../../public-components/Contact';
-import Resume from '../../../public-components/Resume';
 
 class Header extends Component {
     state = { mounted: false }
@@ -34,20 +33,7 @@ class Header extends Component {
                 <HeaderLink to="/"><Icon name="cube" /></HeaderLink>
                 <Menu>
                   <ul>
-                    <Toggle>
-                      {({ on, toggle }) => {
-                        return (
-                          <Fragment>
-                            <MenuItem onClick={ toggle }>Resume</MenuItem>
-                            <Modal toggle={ toggle } on={ on }>
-                              {() => (
-                                <Resume />
-                              )}
-                            </Modal>
-                          </Fragment>
-                        )
-                      }}
-                    </Toggle>
+                    <MenuItem><MenuItemLink to="/resume">Resume</MenuItemLink></MenuItem>
                     <Toggle>
                       {({ on, toggle }) => {
                         return (
