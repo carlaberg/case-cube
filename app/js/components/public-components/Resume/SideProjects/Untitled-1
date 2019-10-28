@@ -1,0 +1,13 @@
+server {
+        listen 80;
+        listen [::]:80;
+
+        root /var/www/case-cube.carlaberg.se/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name case-cube.carlaberg.se www.case-cube.carlaberg.se;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
