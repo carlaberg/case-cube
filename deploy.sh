@@ -1,6 +1,6 @@
 #!/bin/bash
 chmod 755 deploy.sh \
-&& touch bajsmannen.txt
+&& touch bajstanten.txt
 
 # echo ‘post-receive: Triggered.’
 # echo ‘post-receive: pulling from repo…’
