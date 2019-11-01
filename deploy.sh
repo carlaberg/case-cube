@@ -1,6 +1,6 @@
 #!/bin/bash
 git pull origin master \
-&& touch bille.txt
+&& touch pillen.txt
 
 # echo ‘post-receive: Triggered.’
 # echo ‘post-receive: pulling from repo…’
