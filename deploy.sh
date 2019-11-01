@@ -1,6 +1,6 @@
 #!/bin/bash
-git pull origin master \
-&& touch pillen.txt
+chmod 755 deploy.sh \
+&& touch bajsmannen.txt
 
 # echo ‘post-receive: Triggered.’
 # echo ‘post-receive: pulling from repo…’
