@@ -1,7 +1,7 @@
 #!/bin/bash
-touch bulle.txt \
-&& touch banan.txt \
-&& touch bappelsin.txt
+git pull origin master \
+&& touch bille.txt
+
 # echo ‘post-receive: Triggered.’
 # echo ‘post-receive: pulling from repo…’
 # git pull \
