@@ -1,5 +1,5 @@
 #!/bin/bash
-touch hejbla.txt
+touch gulabananen.txt
 
 # echo ‘post-receive: Triggered.’
 # echo ‘post-receive: pulling from repo…’
