@@ -9,7 +9,8 @@
         "custom:server": "node start.js --exec babel-node",
         "custom:localserver": "NODE_ENV=development nodemon start.js --exec babel-node",
         "dev": "npm run custom:localserver && npm run devserver",
-        "start": "npm run custom:server"
+        "start": "npm run custom:server",
+        "build": "webpack"
     },
     "devDependencies": {
         "babel-cli": "^6.24.1",
