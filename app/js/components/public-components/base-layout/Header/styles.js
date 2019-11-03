@@ -10,7 +10,7 @@ export const Wrapper = styled(animated.header)`
   z-index: 1;
   flex-shrink: 0;
   letter-spacing: 1.4px;
-  background: gold;
+  background: lime;
   
   svg {
     width: 100%;

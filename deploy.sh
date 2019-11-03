@@ -1,5 +1,6 @@
 #!/bin/bash
 
+logger 'bule' \
 echo 'Installing dependencies' \
 && npm install \
 && echo 'Done installing dependencies' \
