@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
@@ -29,12 +28,7 @@ module.exports = {
       {
         test:/\.(s*)css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: devMode,
-            },
-          },
+          'style-loader',
           'css-loader',
           'sass-loader'
         ]
@@ -74,9 +68,6 @@ module.exports = {
         from: 'app/fonts/helvetiker_regular.typeface.json', 
         to: 'assets/fonts/helvetiker_regular.typeface.json' 
       }
-    ]),
-    new MiniCssExtractPlugin({
-      filename: devMode ? 'assets/css/[name].css' : 'assets/css/[name].[hash].css'
-    })
+    ])
   ] 
 }
