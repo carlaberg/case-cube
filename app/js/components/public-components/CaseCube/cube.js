@@ -115,10 +115,10 @@ const cube = (parentEl, history) => {
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     
     // ----> ADD TEXT <----
-
+  
     var loader = new THREE.FontLoader();
 
-    loader.load('fonts/helvetiker_regular.typeface.json', createText);
+    loader.load('/fonts/helvetiker_regular.typeface.json', createText);
 
     function pushed(element) {
       element.position.z = -1;

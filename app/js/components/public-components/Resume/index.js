@@ -40,6 +40,7 @@ class Resume extends Component {
     nextVisible: true
   }
   componentDidMount() {
+
     pdf(this.renderResume())
     .toBlob()
     .then(blob => {

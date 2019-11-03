@@ -61,8 +61,8 @@ export const PageNumber = styled.span`
 `
 
 // Styles for react-pdf primitives
-Font.register({ family: 'maaxregular', src: '../../../../fonts/maax-regular-webfont.woff'})
-Font.register({ family: 'maaxbold', src: '../../../../fonts/maax-bold-webfont.woff'})
+Font.register({ family: 'maaxregular', src: '/assets/fonts/maax-regular-webfont.woff'})
+Font.register({ family: 'maaxbold', src: '/assets/fonts/maax-bold-webfont.woff'})
 
 export const StyledPage = reactPDFStyled.Page``
 

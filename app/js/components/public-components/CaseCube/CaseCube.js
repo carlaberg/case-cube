@@ -21,7 +21,7 @@ class CaseCube extends Component {
 
   render() {
     return (
-        <CanvasWrapper innerRef={caseCube => this.caseCube = caseCube} className="case-cube"></CanvasWrapper>
+        <CanvasWrapper ref={caseCube => this.caseCube = caseCube} className="case-cube"></CanvasWrapper>
     )
   }
 }
