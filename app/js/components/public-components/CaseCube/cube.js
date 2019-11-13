@@ -118,7 +118,7 @@ const cube = (parentEl, history) => {
   
     var loader = new THREE.FontLoader();
 
-    loader.load('/fonts/helvetiker_regular.typeface.json', createText);
+    loader.load('/assets/fonts/helvetiker_regular.typeface.json', createText);
 
     function pushed(element) {
       element.position.z = -1;

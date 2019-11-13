@@ -8,7 +8,8 @@ module.exports = {
   entry: ["babel-polyfill", "whatwg-fetch", "./app/entry.js"],
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "assets/js/bundle.js"
+    filename: "assets/js/bundle.js",
+    publicPath: '/'
   },
   devServer:{
     contentBase: "./public",

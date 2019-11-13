@@ -5,7 +5,7 @@ const autoIncrement = require('mongoose-auto-increment');
 
 const uri = process.env.NODE_ENV === 'development' ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI_DEV;
 
-mongoose.connect(uri);
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 global.__basedir = __dirname; // Set __basedir to root
