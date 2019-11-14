@@ -8,7 +8,7 @@ import ScrollToTop from "../generic-components/ScrollToTop"
 import EditCase from "../admin-components/EditCase/EditCase"
 import Home from '../public-components/Home'
 import Case from '../public-components/Case'
-const Resume = lazy(() => import('../public-components/Resume'));
+const Resume = lazy(() => import(/* webpackChunkName: "resume" */'../public-components/Resume'));
 import Header from '../public-components/base-layout/Header'
 import Footer from '../public-components/base-layout/Footer'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

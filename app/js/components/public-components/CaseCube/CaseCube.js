@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { CanvasWrapper } from './styles';
-import cube from './cube';
 
 class CaseCube extends Component {
   constructor(props) {
@@ -10,9 +9,12 @@ class CaseCube extends Component {
   }
   
   componentDidMount() {
-    this.cube = cube(this.caseCube, this.props.history);
-    this.cube.init();
-    this.cube.addListeners();
+    import(/* webpackChunkName: "cube" */ './cube')
+      .then(({ default: cube }) => {
+        this.cube = cube(this.caseCube, this.props.history);
+        this.cube.init();
+        this.cube.addListeners();
+      })
   }
   
   componentWillUnmount() {
