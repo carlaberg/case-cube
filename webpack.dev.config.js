@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "assets/js/bundle.js",
+    chunkFilename: '[name].bundle.js',
     publicPath: '/'
   },
   devServer:{
@@ -71,6 +73,7 @@ module.exports = {
         to: 'assets/fonts/helvetiker_regular.typeface.json' 
       }
     ]),
+    new BundleAnalyzerPlugin()
     // new MiniCssExtractPlugin({
     //   filename: devMode ? 'assets/css/[name].css' : 'assets/css/[name].[hash].css'
     // })
