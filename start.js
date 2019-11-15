@@ -3,7 +3,7 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 const autoIncrement = require('mongoose-auto-increment');
 
-const uri = process.env.NODE_ENV === 'development' ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI_DEV;
+const uri = process.env.NODE_ENV === 'development' ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI;
 
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 

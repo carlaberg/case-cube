@@ -6,7 +6,7 @@
     "scripts": {
         "devserver": "webpack-dev-server --config webpack.dev.config.js",
         "dev2": "webpack -wd",
-        "custom:server": "node start.js --exec babel-node",
+        "custom:server": "NODE_ENV=production node start.js --exec babel-node",
         "custom:localserver": "NODE_ENV=development nodemon start.js --exec babel-node",
         "dev": "npm run custom:localserver && npm run devserver",
         "start": "npm run custom:server",
