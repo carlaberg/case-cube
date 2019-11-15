@@ -73,7 +73,7 @@ class Case extends React.Component {
           <Section id="01" created={ formatDate( created ) }>
             {casePics.length > 0 && (
               <CaseImage 
-                url={ casePics[1].src }
+                url={ casePics[0].src }
                 text={{ caseTitle, description }}
               />
             )}
@@ -104,7 +104,7 @@ class Case extends React.Component {
             </CaseNavigation>
           </Section>
         </CaseContent>
-        <ExpandingCircle innerRef={ this.expandingCircle }/>
+        <ExpandingCircle ref={ this.expandingCircle }/>
       </CaseWrapper>
     )
   }

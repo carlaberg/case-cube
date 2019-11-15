@@ -43,7 +43,7 @@ class Collapser extends Component {
           contentHeight={ this.contentHeight }
           collapsableAt={ collapsableAt }
           >
-            <ContentContainer innerRef={ this.contentContainerRef }>
+            <ContentContainer ref={ this.contentContainerRef }>
               { children }
             </ContentContainer>
         </InnerWrapper>
