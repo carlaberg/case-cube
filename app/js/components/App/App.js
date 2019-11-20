@@ -11,6 +11,8 @@ import Case from '../public-components/Case'
 const Resume = lazy(() => import(/* webpackChunkName: "resume" */'../public-components/Resume'));
 import Header from '../public-components/base-layout/Header'
 import Footer from '../public-components/base-layout/Footer'
+import LoginPage from '../public-components/LoginPage'
+import AuthRequired from '../public-components/AuthRequired'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { SiteContainer, ContentContainer } from './styles'
 
@@ -20,12 +22,13 @@ class App extends React.Component {
   }
   
   render() {
+
     return (
       <Router>
         <Route render={ ({ location }) => (
           <ScrollToTop>
             <SiteContainer>
-              <Header key={ location.pathname}/>
+              <Header location={location} key={location.pathname}/>
               <ContentContainer> 
                   <Transition
                     native
@@ -40,9 +43,12 @@ class App extends React.Component {
                         <Switch location={ location }>
                           <Route exact path="/" render={props => Home({ ...props, style })} />
                           <Route exact path="/resume" component={Resume} />
+                          <Route exact path="/login" component={LoginPage} />
                           <Route path="/cases/:slug" render={props => <Case { ...props } />} />
-                          <Route exact path="/admin/cases" render={props => <Admin { ...props } />} />
-                          <Route path="/admin/cases/edit/:title" render={props => <EditCase { ...props } />} />
+                          <AuthRequired>
+                            <Route exact path="/admin/cases" render={props => <Admin { ...props } />} />
+                            <Route path="/admin/cases/edit/:title" render={props => <EditCase { ...props } />} />
+                          </AuthRequired>
                         </Switch>  
                       </Suspense>
                     )}

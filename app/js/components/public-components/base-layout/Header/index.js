@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Wrapper, Menu, MenuItem, MenuItemLink, HeaderLink } from './styles';
 import { Spring } from 'react-spring';
+import { logout } from '../../../../actions'
 import Icon from '../../../generic-components/Icon';
 import Toggle from '../../../generic-components/Toggle';
 import Modal from '../../../generic-components/Modal';
@@ -16,7 +20,8 @@ class Header extends Component {
     }
     
     render() {
-      const { mounted } = this.state;
+      const { mounted } = this.state
+      const { history } = this.props
         return (
           <Spring
             native
@@ -48,13 +53,25 @@ class Header extends Component {
                         )
                       }}
                     </Toggle>
+                    {history.location.pathname.startsWith('/admin') && <MenuItem onClick={() => logout(() => history.push('/'))}>Log out</MenuItem>}
                   </ul>
                 </Menu>
-              </Wrapper>  
+              </Wrapper>
             )}
           </Spring>
         )
     }
 }
 
-export default Header;
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: (callback) => {
+      dispatch(login(callback))
+    }
+  }
+}
+
+export default compose(
+  withRouter,
+  connect(null, mapDispatchToProps)
+)(Header)

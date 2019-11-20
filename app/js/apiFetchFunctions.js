@@ -1,10 +1,24 @@
+import { 
+  ENDPOINT_LOGIN,
+  ENDPOINT_CURRENT_USER,
+  CLIENT_TOKEN
+} from './utils/settings'
+
+const token = localStorage.getItem(CLIENT_TOKEN)
+
 export const postFileData = async (url, file) => { d
     var formData = new FormData();
     formData.append('casePics', file);
 
+    const headers = new Headers({ 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
     const response = await fetch(url, {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers
     });
 
     const fileData = await response.json();
@@ -25,9 +39,15 @@ export const uploadCasePics = async caseData => {
     formData.append('casePics', caseData.caseHeroImg);
     caseData.casePics.map(pic => formData.append('casePics', pic));
 
+    const profileHeaders = new Headers({ 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
     let response = await fetch('/api/profile', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: profileHeaders
     });
     let imgData = await response.json();
 
@@ -41,9 +61,15 @@ export const addCase = async caseData => {
     formData.append('video', caseData.caseVideo);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
 
+    const profileHeaders = new Headers({ 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
     let response = await fetch('/api/profile', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: profileHeaders
     })
     .catch(err => {
       console.error(err.message);
@@ -80,7 +106,10 @@ export const addCase = async caseData => {
         order: caseData.order
     };
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const headers = new Headers({ 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
 
     return fetch('/api/insert-case', {
         method: 'post',
@@ -157,6 +186,7 @@ export const updateCase = async caseData => {
     const headers = new Headers({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Methods': 'PUT',
+        'Authorization': `Bearer ${token}`
     });
 
     return fetch('/api/update-case', {
@@ -171,6 +201,7 @@ export const deleteCase = id => {
   const headers = new Headers({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Methods': 'DELETE',
+      'Authorization': `Bearer ${token}`
   });
 
   return fetch('/api/delete-case', {
@@ -179,4 +210,28 @@ export const deleteCase = id => {
       headers: headers
   }).then(resp => resp.json());
 
+}
+
+export const login = (credentials) => {
+  const headers = new Headers({
+    'Content-Type': 'application/json'
+  });
+
+  return fetch(ENDPOINT_LOGIN, {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+      headers: headers
+  }).then(resp => resp.json());
+}
+
+export const currentUser = (token) => {
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
+
+  return fetch(ENDPOINT_CURRENT_USER, {
+      method: 'GET',
+      headers: headers
+  }).then(resp => resp.json());
 }
