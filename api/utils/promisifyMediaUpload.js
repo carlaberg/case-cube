@@ -15,7 +15,7 @@ const promisifyMediaUpload = async mediaObject => {
         mediaObject[prop].forEach(media => {
             if(prop === 'video') {
                 const videoPromise = new Promise((resolve, reject) => {
-                    cloudinary.v2.uploader.upload(media.path, {folder: process.env.IMAGE_FOLDER, resource_type: 'video'}, function(error,result) {
+                    cloudinary.v2.uploader.upload(media.path, {folder: process.env.NODE_ENV == 'develop' ? IMAGE_FOLDER_DEV : IMAGE_FOLDER, resource_type: 'video'}, function(error,result) {
                         if(error) {
                             reject(error.message);
                         }
@@ -25,7 +25,7 @@ const promisifyMediaUpload = async mediaObject => {
                 uploadPromises.push(videoPromise);
             } else {
                   const uploadPromise = new Promise((resolve, reject) => {
-                      cloudinary.v2.uploader.upload(media.path, {folder: process.env.IMAGE_FOLDER}, function(error,result) {
+                      cloudinary.v2.uploader.upload(media.path, {folder: process.env.NODE_ENV == 'develop' ? IMAGE_FOLDER_DEV : IMAGE_FOLDER}, function(error,result) {
                           if(error) {
                               reject(error.message);
                           }
