@@ -1,5 +1,3 @@
-import { readSync } from 'fs';
-
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, JWT_EXPIRATION, JWT_USER } = process.env;
 
