@@ -6,7 +6,7 @@ import {
 
 const token = localStorage.getItem(CLIENT_TOKEN)
 
-export const postFileData = async (url, file) => { d
+export const postFileData = async (url, file) => {
     var formData = new FormData();
     formData.append('casePics', file);
 
