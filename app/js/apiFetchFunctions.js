@@ -11,7 +11,6 @@ export const postFileData = async (url, file) => {
     formData.append('casePics', file);
 
     const headers = new Headers({ 
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
 
@@ -40,7 +39,6 @@ export const uploadCasePics = async caseData => {
     caseData.casePics.map(pic => formData.append('casePics', pic));
 
     const profileHeaders = new Headers({ 
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
 
@@ -61,8 +59,7 @@ export const addCase = async caseData => {
     formData.append('video', caseData.caseVideo);
     caseData.casePics.map(pic => formData.append('casePics', pic.fileData));
 
-    const profileHeaders = new Headers({ 
-      'Content-Type': 'application/json',
+    const profileHeaders = new Headers({
       'Authorization': `Bearer ${token}`
     });
 
@@ -135,9 +132,14 @@ export const updateCase = async caseData => {
       }
     });
 
+    const headers = new Headers({ 
+      'Authorization': `Bearer ${token}`
+    });
+
     let response = await fetch('/api/profile', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers
     });
     
     let savedImgs = await response.json();
@@ -183,7 +185,9 @@ export const updateCase = async caseData => {
         order: caseData.order
     };
 
-    const headers = new Headers({
+    console.log(dbObject)
+
+    const updateHeaders = new Headers({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Methods': 'PUT',
         'Authorization': `Bearer ${token}`
@@ -192,7 +196,7 @@ export const updateCase = async caseData => {
     return fetch('/api/update-case', {
         method: 'PUT',
         body: JSON.stringify(dbObject),
-        headers: headers
+        headers: updateHeaders
     }).then(resp => resp.json());
 };
 

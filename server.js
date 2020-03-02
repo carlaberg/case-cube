@@ -11,7 +11,9 @@ server.get("/", (req, res) => {
   });
 });
 
-server.use(bodyParser.json());
+// server.use(bodyParser.json());
+server.use(bodyParser.json({limit: '10mb', extended: true}))
+server.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 server.use("/", router);
 server.use(express.static('public'));
 

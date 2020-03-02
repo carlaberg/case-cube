@@ -28,7 +28,7 @@ const ResumeHeader = () => (
       <LeftColLineInner />
     </LeftColLine>
     <ContentItem>+46 739 13 48 51</ContentItem>
-    <ContentItem>mail.carl.aberg@gmail.com{'\n'}dry-lowlands-15911.herokuapp.com</ContentItem>
+    <ContentItem>mail.carl.aberg@gmail.com{'\n'}case-cube.carlaberg.se</ContentItem>
     <ContentItem>github.com/carlaberg{'\n'}linkedin.com/in/carlåberg</ContentItem>
   </Fragment>
 )

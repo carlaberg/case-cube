@@ -9,8 +9,10 @@ cloudinary.config({
   api_secret: 'MGZDjawGkbGG8cSNaVP5IN9XZ-8'
 });
 
+const { NODE_ENV, IMAGE_FOLDER, IMAGE_FOLDER_DEV } = process.env;
+
 const removeUnusedImgsCloudinary = async () => {
-  cloudinary.v2.api.resources({type: 'upload', max_results: 500, prefix: process.env.NODE_ENV == 'develop' ? IMAGE_FOLDER_DEV : IMAGE_FOLDER}, findFilesToRemove)
+  cloudinary.v2.api.resources({type: 'upload', max_results: 500, prefix: NODE_ENV == 'develop' ? IMAGE_FOLDER_DEV : IMAGE_FOLDER}, findFilesToRemove)
 }
 const findFilesToRemove = async (err, result) => {
 

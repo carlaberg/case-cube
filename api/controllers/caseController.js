@@ -55,7 +55,7 @@ exports.uploadToMemory = (req, res, next) => {
     if (err) {
       console.log(err.message);
     }
-    res.send(req.file);
+    res.send(req.file); 
   })
 }
 
@@ -102,7 +102,7 @@ exports.insertCase = async (req, res, next) => {
 };
 
 exports.updateCase = async (req, res, next) => {
-
+  console.log(req.body)
   try {
     Case.findOneAndUpdate({caseId: req.body.caseId}, req.body, { new: true, overwrite: true, upsert: false, fields: {} }, (err, doc) => {
       if(err) {
