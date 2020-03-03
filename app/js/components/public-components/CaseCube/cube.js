@@ -127,7 +127,7 @@ const cube = (parentEl, history) => {
     function createText(font) {
       cases.forEach((item, index) => {
         let textGeo;
-        if(index === 4) {
+        if(index === 4 || index === 5) {
           textGeo = new THREE.TextGeometry('TBA', {
             font: font,
             size: 0.25,

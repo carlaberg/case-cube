@@ -40,7 +40,7 @@ exports.signIn = async (req, res) => {
 exports.protect = async (req, res, next) => {
   // Get the authorization header from  the incoming request
   const bearer = req.headers.authorization
-
+  console.log(bearer)
   // Return Unauthorized status if there is no bearer token in the
   // request header or if it doesn'r start with the word Bearer
   if (!bearer || !bearer.startsWith('Bearer ')) {
