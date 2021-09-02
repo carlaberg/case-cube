@@ -13,7 +13,7 @@
         "custom:localserver": "NODE_ENV=development nodemon start.js --exec babel-node",
         "dev": "npm run custom:localserver && npm run devserver",
         "start": "npm run custom:server",
-        "build": "NODE_ENV=production webpack --config webpack.prod.config.js"
+        "build": "NODE_ENV=production npm rebuild node-sass && webpack --config webpack.prod.config.js"
     },
     "devDependencies": {
         "@babel/core": "^7.6.4",
